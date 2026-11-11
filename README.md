@@ -25,7 +25,7 @@ npm run build
 npm run preview
 ```
 
-`dev` and `build` first restore the credited images, models and fonts from the ordered asset-bundle parts. Every part and the assembled archive are checked with SHA256 before extraction. The bundle keeps large image/model files manageable while the application source stays directly editable in Git. Do not edit a part by hand. The asset directories are ignored after extraction.
+`dev` and `build` first restore the credited images, models and fonts from the ordered asset-bundle parts. Every part and the assembled archive are checked with SHA256 before extraction. The bundle keeps large image/model files manageable while the application source stays directly editable in Git. The older Surveyor 3 scroll-image sequence is restored with the media bundle. Do not edit a part by hand. The asset directories are ignored after extraction.
 
 `npm run build` produces the static site in `dist`. Client-side routes need a static host fallback to `index.html`. `scripts/page-metadata.mjs` generates per-route metadata and direct-entry HTML. Its canonical origin is the existing live site, https://the-last-signal-lime.vercel.app/ . Do not change production deployment or the canonical origin as part of an unrelated PR.
 
