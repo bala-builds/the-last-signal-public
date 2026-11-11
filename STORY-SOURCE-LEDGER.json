@@ -2189,5 +2189,173 @@
     "source": "https://www.nasa.gov/image-article/nasas-lunar-reconnaissance-orbiter-views-im-2-on-moons-surface/",
     "description": "Black and white image of the Moon taking from above from the Lunar Reconnaissance Orbiter. A tiny white arrow in the center points to the location of Intuitive Machines' Athena lander.",
     "credit": "NASA/GSFC/Arizona State University \u00b7 7 MAR 2025"
+  },
+  {
+    "name": "im1-prepare",
+    "image": "https://images-assets.nasa.gov/image/KSC-20221118-PH-ILW01_0019/KSC-20221118-PH-ILW01_0019~large.jpg",
+    "source": "https://images-assets.nasa.gov/image/KSC-20221118-PH-ILW01_0019/collection.json",
+    "description": "Two Intuitive Machines employees ready navigation pod sensors for the company\u2019s Nova-C lunar lander in preparation for testing at NASA\u2019s Kennedy Space Center in Florida on Nov. 18, 2022. The test involved flying the sensors over a simulated lunar surface at the Launch and Landing Facility on a private helicopter. Intuitive Machines is scheduled to launch two missions to the Moon in 2023 \u2013 one of which will carry NASA\u2019s Mass Spectrometer observing lunar operations (MSolo) instrument that will help analyze the chemical makeup of landing sites on the Moon, as well as study water on the lunar surface. Through NASA\u2019s Commercial Lunar Payload Services initiative, the agency selected Intuitive Machines to deliver science and technology demonstration payloads to the Moon, contributing to NASA\u2019s goal of establishing a sustainable human presence on the lunar surface.",
+    "credit": "NASA/Isaac Watson"
+  },
+  {
+    "name": "im1-launch",
+    "image": "https://images-assets.nasa.gov/image/KSC-20240215-PH-KLS01_0023/KSC-20240215-PH-KLS01_0023~large.jpg",
+    "source": "https://images-assets.nasa.gov/image/KSC-20240215-PH-KLS01_0023/collection.json",
+    "description": "A SpaceX Falcon 9 rocket carrying Intuitive Machines\u2019 Nova-C lunar lander lifts off from Launch Pad 39A at NASA\u2019s Kennedy Space Center in Florida at 1:05 a.m. EST\u00a0on Thursday, Feb. 15, 2024. As part of NASA\u2019s CLPS (Commercial Lunar Payload Services) initiative and Artemis campaign, Intuitive Machines\u2019 first lunar mission will carry NASA science and commercial payloads to the Moon to study plume-surface interactions, space weather/lunar surface interactions, radio astronomy, precision landing technologies, and a communication and navigation node for future autonomous navigation technologies.",
+    "credit": "NASA/Kim Shiflett"
+  },
+  {
+    "name": "im1-cameras",
+    "image": "https://science.nasa.gov/wp-content/uploads/2022/12/scalpss-011-3000x2249-1.jpeg?w=2048",
+    "source": "https://science.nasa.gov/lunar-science/clps-deliveries/to2-im/",
+    "description": "A set of four cameras mounted on a metal wheel, along with control circuitry and processing units, undergo vibration testing in a lab. For some reason, there is a tape dispenser that appears to be from the 70s in the background. I imagine this wasn't part of the experiment.",
+    "credit": "NASA/Langley \u00b7 Earth reference hardware"
+  },
+  {
+    "name": "im1-lidar",
+    "image": "https://science.nasa.gov/wp-content/uploads/2023/04/NDL1.png?w=1067",
+    "source": "https://science.nasa.gov/lunar-science/clps-deliveries/to2-im/",
+    "description": "Three telescopes are sitting to the left of the payload which is the shape of a rectangular box. The telescopes are a dark blue color all mounted on the same piece of equipment. The payload box is a silver grey with black knobs on the front side.",
+    "credit": "NASA/Langley \u00b7 Earth reference hardware"
+  },
+  {
+    "name": "im1-radio",
+    "image": "https://science.nasa.gov/wp-content/uploads/2023/04/ROLSES-jpg.webp?w=1720",
+    "source": "https://science.nasa.gov/lunar-science/clps-deliveries/to2-im/",
+    "description": "Four sensors sit on a table connected with a series of silver-colored wires. Each sensor consists of a silver base plate with a black cylinder attached at a 45-degree angle. At the end of the cylinder sits a silver flat plate, which angle varies from sensor to sensor.",
+    "credit": "NASA/Goddard \u00b7 Earth reference hardware"
+  },
+  {
+    "name": "im1-beacon",
+    "image": "https://science.nasa.gov/wp-content/uploads/2023/04/to2-im-ln-1.png?w=616",
+    "source": "https://science.nasa.gov/lunar-science/clps-deliveries/to2-im/",
+    "description": "The Earth and Moon hover against a dark background on opposite sides. On the Moon, graphics represent a rover and landers. A satellite is positioned above Earth, representing a \u201cground station,\u201d while instruments positioned on the Moon represent rovers and landers. A CubeSat hovers over the Moon. A network of data sharing occurs between the objects, represented by arrows and red wavy lines. They are pointing in different directions to indicate communications between the objects.",
+    "credit": "NASA/MSFC \u00b7 navigation concept diagram"
+  },
+  {
+    "name": "im1-reflector",
+    "image": "https://science.nasa.gov/wp-content/uploads/2023/04/lra-1.png?w=1613",
+    "source": "https://science.nasa.gov/lunar-science/clps-deliveries/to2-im/",
+    "description": "The device is a gold-colored ball with a large square flat plate running through the middle and out the sides of the sphere. The gold-colored sphere is hollow with many holes going through it. These holes have a black edge as well as are equidistant from one another.",
+    "credit": "NASA/GSFC \u00b7 Earth reference hardware"
+  },
+  {
+    "name": "im1-rest",
+    "image": "https://www.nasa.gov/wp-content/uploads/2024/02/nova-c-1100x1100-crop.png?w=1100",
+    "source": "https://www.nasa.gov/missions/lro/nasas-lro-images-intuitive-machines-odysseus-lander/",
+    "description": "grayscale image of Moon's rocky surface from above, with a small white dot at the center of the frame: IM-1 lander, location indicated with white arrow",
+    "credit": "NASA/GSFC/Arizona State University \u00b7 LRO, 24 FEB 2024"
+  },
+  {
+    "name": "bg-shield",
+    "image": "https://images-assets.nasa.gov/image/KSC-20230118-PH-CSH01_0002/KSC-20230118-PH-CSH01_0002~large.jpg",
+    "source": "https://images-assets.nasa.gov/image/KSC-20230118-PH-CSH01_0002/collection.json",
+    "description": "Inside of the Electrostatics and Surface Physics Laboratory at NASA\u2019s Kennedy Space Center in Florida, an electrodynamic dust shield (EDS) is in view on Jan. 18, 2023. The dust shield is one of the payloads that will fly aboard Firefly Aerospace\u2019s Blue Ghost lunar lander as part of NASA\u2019s Commercial Lunar Payload Services (CLPS) initiative. During the mission, EDS will generate a non-uniform electric field using varying high voltage on multiple electrodes. This traveling field, in turn, carries away the particles and has potential applications in thermal radiators, spacesuit fabrics, visors, camera lenses, solar panels, and many other technologies. The CLPS initiative is a key part of NASA\u2019s Artemis lunar exploration efforts. The science and technology payloads sent to the Moon\u2019s surface as part of the initiative will help lay the foundation for human missions and a sustainable human presence on the lunar surface. ",
+    "credit": "NASA/Cory Huston"
+  },
+  {
+    "name": "bg-pad",
+    "image": "https://images-assets.nasa.gov/image/KSC-20250114-PH-KLS01_0039/KSC-20250114-PH-KLS01_0039~large.jpg",
+    "source": "https://images-assets.nasa.gov/image/KSC-20250114-PH-KLS01_0039/collection.json",
+    "description": "A SpaceX Falcon 9 rocket carrying Firefly Aerospace\u2019s Blue Ghost Mission One lander prepares for a launch to the Moon on Tuesday, Jan. 14, 2025 from Launch Complex 39A at the agency\u2019s Kennedy Space Center in Florida as part of NASA\u2019s CLPS (Commercial Lunar Payload Services) initiative. The Blue Ghost lander will carry 10 NASA science and technology instruments to the lunar surface to further understand the Moon and help prepare for future human missions. Liftoff is targeted for 1:11 a.m. EST.",
+    "credit": "NASA/Kim Shiflett"
+  },
+  {
+    "name": "bg-launch",
+    "image": "https://images-assets.nasa.gov/image/KSC-20250115-PH-FMX01_0057/KSC-20250115-PH-FMX01_0057~large.jpg",
+    "source": "https://images-assets.nasa.gov/image/KSC-20250115-PH-FMX01_0057/collection.json",
+    "description": "A SpaceX Falcon 9 rocket carrying Firefly Aerospace\u2019s Blue Ghost Mission One is on its way to the Moon as part of NASA\u2019s CLPS (Commercial Lunar Payload Services) initiative. The Blue Ghost lander launched from Launch Complex 39A at NASA\u2019s Kennedy Space Center in Florida on Wednesday, Jan. 15, 2025 carrying 10 NASA science and technology instruments to the lunar surface to further understand the Moon and help prepare for future human missions.",
+    "credit": "NASA/Frank Michaux"
+  },
+  {
+    "name": "bg-cameras",
+    "image": "https://www.nasa.gov/wp-content/uploads/2025/03/scalpss-turntable-1-17-25-updated-1.mp4",
+    "source": "https://www.nasa.gov/general/nasa-cameras-on-blue-ghost-capture-first-of-its-kind-moon-landing-footage/",
+    "description": "Frame from NASA SCALPSS 1.1 hardware turntable, a reference animation, not flight imagery",
+    "credit": "NASA/Langley \u00b7 SCALPSS 1.1 reference animation"
+  },
+  {
+    "name": "bg-descent",
+    "image": "https://www.nasa.gov/wp-content/uploads/2025/03/final-out-crf35.mp4",
+    "source": "https://www.nasa.gov/general/nasa-cameras-on-blue-ghost-capture-first-of-its-kind-moon-landing-footage/",
+    "description": "Four NASA SCALPSS camera views during Blue Ghost descent; altitude overlays approximate",
+    "credit": "NASA/Olivia Tyrrell \u00b7 SCALPSS 1.1 landing sequence"
+  },
+  {
+    "name": "bg-clean",
+    "image": "https://www.nasa.gov/wp-content/uploads/2025/03/electromagnetic-dust-shield-gif-1.gif?w=480",
+    "source": "https://www.nasa.gov/image-article/nasas-dust-shield-successfully-repels-lunar-regolith-on-moon/",
+    "description": "After-activation frame from NASA electrodynamic dust shield demonstration on the Moon",
+    "credit": "NASA \u00b7 actual EDS lunar demonstration"
+  },
+  {
+    "name": "bg-sunset",
+    "image": "https://www.nasa.gov/wp-content/uploads/2025/03/sfl0-sunset-512x384-compressed.gif?w=512",
+    "source": "https://www.nasa.gov/image-article/goodnight-moon-nasa-cameras-on-blue-ghost-capture-lunar-sunset/",
+    "description": "Earlier sunlit frame from NASA SCALPSS sunset sequence on Blue Ghost, March 2025",
+    "credit": "NASA/Olivia Tyrrell \u00b7 SCALPSS sunset sequence"
+  },
+  {
+    "name": "bg-place",
+    "image": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/lunar-science/2023/08/wrinkle-ridge-mare-crisium.png?w=768&h=768&fit=clip",
+    "source": "https://science.nasa.gov/lunar-science/clps-deliveries/to19d-firefly/",
+    "description": "Overhead view of a pockmarked landform on the Moon. Light catches the curved edge of the ridge on the left; its right edge is in shadow.",
+    "credit": "NASA Science \u00b7 Mare Crisium terrain context"
+  },
+  {
+    "name": "lt-instrument",
+    "image": "https://images-assets.nasa.gov/image/PIA25256/PIA25256~orig.jpg",
+    "source": "https://images-assets.nasa.gov/image/PIA25256/collection.json",
+    "description": "The HVM\u00b3 instrument sits in a JPL clean room in early December 2022. The instrument was built at JPL then shipped to Lockheed Martin Space in Colorado to be integrated with NASA's Lunar Trailblazer spacecraft.",
+    "credit": "NASA/JPL-Caltech"
+  },
+  {
+    "name": "lt-legacy",
+    "image": "https://images-assets.nasa.gov/image/PIA25252/PIA25252~orig.jpg",
+    "source": "https://images-assets.nasa.gov/image/PIA25252/collection.json",
+    "description": "The High-resolution Volatiles and Minerals Moon Mapper (HVM&#xB3;) is one of two instruments that will be carried aboard NASA's Lunar Trailblazer, launching in 2023.",
+    "credit": "NASA/JPL-Caltech"
+  },
+  {
+    "name": "lt-launch",
+    "image": "https://images-assets.nasa.gov/image/KSC-20250226-PH-FMX01_0009/KSC-20250226-PH-FMX01_0009~large.jpg",
+    "source": "https://images-assets.nasa.gov/image/KSC-20250226-PH-FMX01_0009/collection.json",
+    "description": "A SpaceX Falcon 9 rocket carrying Intuitive Machines\u2019 Nova-C lunar lander (IM-2) launches at 7:16 p.m. EST on Wednesday, Feb. 26, 2025, from Launch Complex 39A at NASA\u2019s Kennedy Space Center in Florida as part of NASA\u2019s CLPS (Commercial Lunar Payload Services) initiative. The IM-2 launch is carrying NASA science, technology demonstrations, and other commercial payloads to Mons Mouton, a lunar plateau to advance our understanding of the Moon and planetary processes, while paving the way for future crewed missions.",
+    "credit": "NASA/Frank Michaux"
+  },
+  {
+    "name": "lt-water",
+    "image": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/photojournal/pia/pia12/pia12237/PIA12237.jpg?w=1536&h=1536&fit=clip&crop=faces%2Cfocalpoint",
+    "source": "https://science.nasa.gov/photojournal/water-detected-at-high-latitudes/",
+    "description": "Earlier Moon Mineralogy Mapper water and hydroxyl signatures; not Trailblazer data",
+    "credit": "NASA/JPL \u00b7 M3 on ISRO Chandrayaan-1 \u00b7 2009 context"
+  },
+  {
+    "name": "lt-thermal",
+    "image": "https://d2pn8kiwq2w21t.cloudfront.net/images/imageslro20101021lro20101021-640.width-1024.jpg",
+    "source": "https://www.jpl.nasa.gov/news/lunar-impact-may-impact-lunar-science-for-years-to-come/",
+    "description": "Earlier LRO Diviner south-polar temperature map, not Trailblazer science",
+    "credit": "NASA/GSFC/UCLA \u00b7 LRO Diviner \u00b7 2009 context"
+  },
+  {
+    "name": "lt-signal",
+    "image": "https://www.nasa.gov/wp-content/uploads/2016/10/dss36_sun_6sept16.jpg?w=2048",
+    "source": "https://www.nasa.gov/news-release/nasas-newest-deep-space-network-antenna-is-operational/",
+    "description": "Deep Space Station 36 in Canberra in 2016, not a photograph of the 2025 signal acquisition",
+    "credit": "NASA \u00b7 DSS-36 \u00b7 2016 ground-station context"
+  },
+  {
+    "name": "lt-network",
+    "image": "https://www.nasa.gov/wp-content/uploads/2020/03/2021_ground_station_map_dsn_only.png?w=2048",
+    "source": "https://www.nasa.gov/directorates/somd/space-communications-navigation-program/dsn-complexes/",
+    "description": "Reference map of the three Deep Space Network complexes, not a plotted Trailblazer recovery track",
+    "credit": "NASA \u00b7 Deep Space Network reference map"
+  },
+  {
+    "name": "lt-power",
+    "image": "Original explanatory diagram based on NASA mission-end report",
+    "source": "https://www.nasa.gov/missions/small-satellite-missions/lunar-trailblazer/nasas-lunar-trailblazer-moon-mission-ends/",
+    "description": "Simplified sunlight, generic edge-on solar panels and spacecraft diagram, not actual Trailblazer geometry or attitude data",
+    "credit": "THE LAST SIGNAL \u00b7 NASA-grounded explanatory diagram"
   }
-]
+    ]
