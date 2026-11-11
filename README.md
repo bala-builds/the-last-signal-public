@@ -4,15 +4,15 @@ Clean standalone contribution source for an independent educational NASA-storyte
 
 ## Included
 
-- 38 picture-book mission stories, each with eight to twelve distinct scenes.
-- 30 completed or lost mission records in Archive and Final Signal.
+- 41 picture-book mission stories, each with eight to twelve distinct scenes.
+- 33 completed or lost mission records in Archive and Final Signal.
 - Eight ongoing missions kept separately in Still Exploring.
 - 17 equipment explorers. Voyager 1 and Voyager 2 share the Voyager twins explorer.
 - Separate Stories, Equipment, Archive, Still Exploring and reference pages.
 
-This source includes locally checked Peregrine and IM-2 Athena stories. The live website may still show the preceding 36-story release until the next verified publication batch. This repository does not trigger automatic production deployment.
+This source includes all supplied PDF mission stories, including Peregrine, IM-2 Athena, IM-1 Odysseus, Blue Ghost Mission 1 and Lunar Trailblazer. The live website may still show the preceding 36-story release until the next verified publication batch. This repository does not trigger automatic production deployment.
 
-Three supplied PDF cards remain: IM-1 Odysseus, Blue Ghost Mission 1 and Lunar Trailblazer. Lunar Trailblazer is a NASA small orbiter, not a commercial lander.
+All supplied PDF mission cards are implemented. Lunar Trailblazer is a NASA small orbiter, not a commercial lander.
 
 ## Run locally
 
@@ -45,4 +45,4 @@ Public visibility does not grant a new blanket license to this project's origina
 
 ## Checks and limits
 
-The source was built and visually checked at phone and desktop widths. Peregrine and IM-2 each passed 27 new scene/collection checks at 320, 390 and 1280px with no broken images, horizontal overflow or recorded runtime exceptions. These are scoped checks, not a complete accessibility audit. Instagram's in-app browser, live telemetry and the current condition of distant hardware are not verified.
+The source was built and visually checked at phone and desktop widths. The full 41-story collection passed 682 scene/image/overflow checks at 320 and 1280px with no errors. Each of the five most recent stories passed 27 new scene/collection checks at 320, 390 and 1280px with no broken images, horizontal overflow or recorded runtime exceptions. These are scoped checks, not a complete accessibility audit. Instagram's in-app browser, live telemetry and the current condition of distant hardware are not verified.
