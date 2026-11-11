@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.asset-cache/
+src/story-assets/
+src/photos/
+src/fonts/
+public/
+.env
+.env.*
