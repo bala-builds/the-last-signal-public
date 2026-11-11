@@ -57,3 +57,6 @@
 .art-data .art-main{filter:none;transform:none;object-fit:contain}
 /* Keep portrait/composite data inside the story stage rather than its intrinsic grid minimum. */
 .film-shot>.film-art{position:absolute;inset:0;min-height:0;min-width:0}.film-shot .art-main{position:absolute;inset:0;min-height:0;min-width:0}
+
+/* Readable documentary credits at phone widths. */
+.ls .film-evidence>span{font-family:Inter,sans-serif;font-size:9px;line-height:1.45}
