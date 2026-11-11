@@ -1,0 +1,290 @@
+{
+  "/": {
+    "title": "THE LAST SIGNAL | NASA Mission Stories",
+    "description": "NASA-grounded visual stories about distant explorers, the hardware left behind and missions still exploring.",
+    "canonical": "https://the-last-signal-lime.vercel.app/",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/stories": {
+    "title": "Visual Stories | THE LAST SIGNAL",
+    "description": "Read picture-book journeys through NASA mission history, with original photographs and evidence close by.",
+    "canonical": "https://the-last-signal-lime.vercel.app/stories",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/equipment": {
+    "title": "Inspect the Equipment | THE LAST SIGNAL",
+    "description": "Explore distinct inspectable spacecraft and equipment models, with clear labels for NASA geometry and simplified schematics.",
+    "canonical": "https://the-last-signal-lime.vercel.app/equipment",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/archive": {
+    "title": "NASA Reference Library | THE LAST SIGNAL",
+    "description": "Search completed mission and equipment records, timelines, specifications and original NASA sources.",
+    "canonical": "https://the-last-signal-lime.vercel.app/archive",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/still-exploring": {
+    "title": "Still Exploring | THE LAST SIGNAL",
+    "description": "Meet active explorers in a separate ongoing collection, with dated NASA status checks and no invented endings.",
+    "canonical": "https://the-last-signal-lime.vercel.app/still-exploring",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/machines": {
+    "title": "Mission Directory | THE LAST SIGNAL",
+    "description": "Choose an explorer and follow its visual story, inspect its equipment or read the NASA evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/machines",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/missions": {
+    "title": "Mission Directory | THE LAST SIGNAL",
+    "description": "Browse the mission directory of THE LAST SIGNAL, an independent educational space-history project.",
+    "canonical": "https://the-last-signal-lime.vercel.app/missions",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/signal": {
+    "title": "The Final Signal | THE LAST SIGNAL",
+    "description": "Follow documented mission endings through manual timelines. No invented final words or transmission recordings.",
+    "canonical": "https://the-last-signal-lime.vercel.app/signal",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/references": {
+    "title": "Research and Credits | THE LAST SIGNAL",
+    "description": "Read the original NASA mission sources and image credits behind THE LAST SIGNAL.",
+    "canonical": "https://the-last-signal-lime.vercel.app/references",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/about": {
+    "title": "About the Project | THE LAST SIGNAL",
+    "description": "Learn how THE LAST SIGNAL separates documented NASA history, illustrative effects and simplified equipment studies.",
+    "canonical": "https://the-last-signal-lime.vercel.app/about",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/surveyor-3": {
+    "title": "Surveyor 3 | THE LAST SIGNAL",
+    "description": "Surveyor 3: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/surveyor-3",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/apollo-17-lrv": {
+    "title": "Apollo 17 Lunar Rover | THE LAST SIGNAL",
+    "description": "Apollo 17 Lunar Rover: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/apollo-17-lrv",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/opportunity": {
+    "title": "Opportunity | THE LAST SIGNAL",
+    "description": "Opportunity: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/opportunity",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/ranger-7": {
+    "title": "Ranger 7 | THE LAST SIGNAL",
+    "description": "Ranger 7: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/ranger-7",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/surveyor-1": {
+    "title": "Surveyor 1 | THE LAST SIGNAL",
+    "description": "Surveyor 1: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/surveyor-1",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/apollo-11-surface": {
+    "title": "Apollo 11 Surface Station | THE LAST SIGNAL",
+    "description": "Apollo 11 Surface Station: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/apollo-11-surface",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/lro": {
+    "title": "Lunar Reconnaissance Orbiter | THE LAST SIGNAL",
+    "description": "Lunar Reconnaissance Orbiter: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/lro",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/apollo-12-surface": {
+    "title": "Apollo 12 Surface Station | THE LAST SIGNAL",
+    "description": "Apollo 12 Surface Station: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/apollo-12-surface",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/apollo-14-surface": {
+    "title": "Apollo 14 Surface Station | THE LAST SIGNAL",
+    "description": "Apollo 14 Surface Station: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/apollo-14-surface",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/apollo-15-surface": {
+    "title": "Apollo 15 Surface Equipment | THE LAST SIGNAL",
+    "description": "Apollo 15 Surface Equipment: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/apollo-15-surface",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/apollo-16-surface": {
+    "title": "Apollo 16 Surface Equipment | THE LAST SIGNAL",
+    "description": "Apollo 16 Surface Equipment: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/apollo-16-surface",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/apollo-17-surface": {
+    "title": "Apollo 17 Surface Station | THE LAST SIGNAL",
+    "description": "Apollo 17 Surface Station: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/apollo-17-surface",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/lcross": {
+    "title": "LCROSS | THE LAST SIGNAL",
+    "description": "LCROSS: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/lcross",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/ladee": {
+    "title": "LADEE | THE LAST SIGNAL",
+    "description": "LADEE: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/ladee",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/grail": {
+    "title": "GRAIL: Ebb and Flow | THE LAST SIGNAL",
+    "description": "GRAIL: Ebb and Flow: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/grail",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/viking-1": {
+    "title": "Viking 1 Lander | THE LAST SIGNAL",
+    "description": "Viking 1 Lander: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/viking-1",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/viking-2": {
+    "title": "Viking 2 Lander | THE LAST SIGNAL",
+    "description": "Viking 2 Lander: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/viking-2",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/pathfinder": {
+    "title": "Pathfinder + Sojourner | THE LAST SIGNAL",
+    "description": "Pathfinder + Sojourner: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/pathfinder",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/mars-global-surveyor": {
+    "title": "Mars Global Surveyor | THE LAST SIGNAL",
+    "description": "Mars Global Surveyor: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/mars-global-surveyor",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/spirit": {
+    "title": "Spirit | THE LAST SIGNAL",
+    "description": "Spirit: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/spirit",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/phoenix": {
+    "title": "Phoenix | THE LAST SIGNAL",
+    "description": "Phoenix: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/phoenix",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/insight": {
+    "title": "InSight | THE LAST SIGNAL",
+    "description": "InSight: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/insight",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/mars-climate-orbiter": {
+    "title": "Mars Climate Orbiter | THE LAST SIGNAL",
+    "description": "Mars Climate Orbiter: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/mars-climate-orbiter",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/mars-polar-lander": {
+    "title": "Mars Polar Lander + Deep Space 2 | THE LAST SIGNAL",
+    "description": "Mars Polar Lander + Deep Space 2: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/mars-polar-lander",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/odyssey": {
+    "title": "2001 Mars Odyssey | THE LAST SIGNAL",
+    "description": "2001 Mars Odyssey: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/odyssey",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/mro": {
+    "title": "Mars Reconnaissance Orbiter | THE LAST SIGNAL",
+    "description": "Mars Reconnaissance Orbiter: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/mro",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/curiosity": {
+    "title": "Curiosity | THE LAST SIGNAL",
+    "description": "Curiosity: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/curiosity",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/maven": {
+    "title": "MAVEN | THE LAST SIGNAL",
+    "description": "MAVEN: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/maven",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/perseverance": {
+    "title": "Perseverance | THE LAST SIGNAL",
+    "description": "Perseverance: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/perseverance",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/perseverance-backshell": {
+    "title": "Mars 2020 Backshell + Parachute | THE LAST SIGNAL",
+    "description": "Mars 2020 Backshell + Parachute: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/perseverance-backshell",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/ingenuity": {
+    "title": "Ingenuity | THE LAST SIGNAL",
+    "description": "Ingenuity: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/ingenuity",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/pioneer-10": {
+    "title": "Pioneer 10 | THE LAST SIGNAL",
+    "description": "Pioneer 10: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/pioneer-10",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/pioneer-11": {
+    "title": "Pioneer 11 | THE LAST SIGNAL",
+    "description": "Pioneer 11: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/pioneer-11",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/voyager-1": {
+    "title": "Voyager 1 | THE LAST SIGNAL",
+    "description": "Voyager 1: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/voyager-1",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/voyager-2": {
+    "title": "Voyager 2 | THE LAST SIGNAL",
+    "description": "Voyager 2: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/voyager-2",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/new-horizons": {
+    "title": "New Horizons | THE LAST SIGNAL",
+    "description": "New Horizons: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/new-horizons",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/peregrine-1": {
+    "title": "Peregrine Mission One | THE LAST SIGNAL",
+    "description": "Peregrine Mission One: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/peregrine-1",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/im-2-athena": {
+    "title": "IM-2 Athena | THE LAST SIGNAL",
+    "description": "IM-2 Athena: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/im-2-athena",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  }
+}
