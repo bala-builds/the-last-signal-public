@@ -54,6 +54,21 @@
 .ls[data-motion-tier="archive"] .archive-card{transition-duration:.25s}
 .ls[data-motion-tier="about"] .about-editorial-wrap{animation:page-fade-in .65s ease both}
 
+/* 3D Telemetry Shimmer Warm-up */
+.telemetry-shimmer{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;pointer-events:none;z-index:10;background:rgba(18,19,16,.75);backdrop-filter:blur(4px);animation:telemetry-fade-in .3s ease both}
+.shimmer-pulse{width:34px;height:34px;border:1.5px solid rgba(232,225,213,.2);border-top-color:var(--ink);border-radius:50%;animation:telemetry-spin 1s cubic-bezier(.5,0,.5,1) infinite}
+.shimmer-lbl{font:9px/1.4 var(--mono),monospace;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+@keyframes telemetry-spin{to{transform:rotate(360deg)}}
+@keyframes telemetry-fade-in{from{opacity:0}to{opacity:1}}
+
+/* Intermediate Laptop Viewport Refinements (1024px–1280px) */
+@media (min-width: 900px) and (max-width: 1250px) {
+  .ls .hero-content h1{font-size:clamp(56px,6vw,84px);line-height:.92}
+  .ls .editorial h1{font-size:clamp(42px,4.5vw,62px)}
+  .ls .cards{gap:16px}
+  .ls .archive-grid{gap:16px}
+}
+
 
 .model-explorer{margin:56px 0 80px}.model-explorer h2{font-size:clamp(36px,5vw,68px)}.rover3d{border:1px solid #77746f55;background:#1b1b19;padding:24px}.rover-canvas{position:relative;height:500px;background:#111110}.rover-canvas canvas{display:block;width:100%;height:100%;touch-action:none}.model-label{position:absolute;top:18px;left:18px;pointer-events:none;font:10px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#a6a198}.model-controls{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.model-controls button{min-height:44px}.model-status,.model-credit{font-size:12px;color:#a6a198}.model-poster{height:380px;position:relative;overflow:hidden;background:#252522}.model-poster img{width:100%;height:100%;object-fit:cover;opacity:.55;filter:grayscale(1)}.model-poster button{position:absolute;left:24px;bottom:24px}.model-explorer>.muted{font-size:13px}.model-credit a{text-decoration:underline}@media(max-width:600px){.rover3d{padding:12px}.rover-canvas{height:340px}.model-controls{gap:8px}.model-controls button{font-size:10px;padding:12px}.model-label{font-size:8px;left:12px}.model-poster{height:320px}}
 

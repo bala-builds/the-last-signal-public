@@ -665,6 +665,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 13px 16px;
+  min-height: 44px;
   user-select: none;
 }
 
