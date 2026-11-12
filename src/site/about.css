@@ -402,7 +402,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   PRIMARY EVIDENCE LIBRARY (Section 05) — 3 HOVER-EXPANDABLE SECTIONS
+   PRIMARY EVIDENCE LIBRARY (Section 05) — PROGRESSIVE HOVER DISCLOSURE
    -------------------------------------------------------------------------- */
 .reference-controls {
   margin-bottom: 24px;
@@ -510,7 +510,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   Three Hover-Expandable Destination Stack
+   Three Hover-Expandable Destination Sections (Level 1)
    -------------------------------------------------------------------------- */
 .three-destination-stack {
   display: flex;
@@ -617,7 +617,7 @@
   color: var(--ink);
 }
 
-/* Accordion Drawer */
+/* Destination Drawer (Level 1) */
 .dest-drawer {
   display: grid;
   grid-template-rows: 0fr;
@@ -632,41 +632,43 @@
   overflow: hidden;
 }
 
-.dest-missions-grid {
+.dest-missions-gallery {
   padding: 24px 28px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
   background: rgba(17, 17, 16, 0.4);
 }
 
-/* Mission Card inside Destination */
-.dest-mission-card {
-  background: rgba(27, 27, 25, 0.85);
-  border: 1px solid rgba(200, 197, 190, 0.15);
+/* --------------------------------------------------------------------------
+   Mission Hover Node (Level 2: Shows Names Only -> Hover to Reveal Links)
+   -------------------------------------------------------------------------- */
+.mission-hover-node {
+  background: rgba(27, 27, 25, 0.9);
+  border: 1px solid rgba(200, 197, 190, 0.14);
   border-radius: 2px;
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: border-color 0.2s, background 0.2s;
+  overflow: hidden;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+  cursor: pointer;
 }
 
-.dest-mission-card:hover {
-  border-color: rgba(200, 197, 190, 0.35);
-  background: rgba(37, 37, 34, 0.6);
+.mission-hover-node:hover,
+.mission-hover-node.active {
+  border-color: rgba(200, 197, 190, 0.45);
+  background: #242421;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
 }
 
-.dest-card-head {
+.mission-node-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  border-bottom: 1px solid rgba(200, 197, 190, 0.1);
-  padding-bottom: 8px;
+  padding: 13px 16px;
+  user-select: none;
 }
 
-.m-card-name {
+.mission-node-title {
   font-family: var(--body), sans-serif;
   font-size: 13px;
   font-weight: 600;
@@ -674,29 +676,72 @@
   letter-spacing: 0.02em;
 }
 
-.m-card-badge {
+.mission-node-badge {
   font-family: var(--mono), monospace;
   font-size: 9px;
   letter-spacing: 0.06em;
   color: var(--dim);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(200, 197, 190, 0.12);
+  padding: 2px 6px;
+  border-radius: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.mission-hover-node:hover .mission-node-badge,
+.mission-hover-node.active .mission-node-badge {
+  color: var(--ink);
+  border-color: rgba(200, 197, 190, 0.3);
+}
+
+.mission-node-arrow {
+  font-family: var(--mono), monospace;
+  font-size: 8px;
+  color: var(--dim);
+  transition: color 0.2s, transform 0.2s;
+}
+
+.mission-hover-node:hover .mission-node-arrow,
+.mission-hover-node.active .mission-node-arrow {
+  color: var(--ink);
+}
+
+/* Level 2 Links Drawer — Expands Only When Mission is Hovered/Active */
+.mission-links-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+.mission-hover-node:hover .mission-links-drawer,
+.mission-hover-node.active .mission-links-drawer {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.mission-links-inner {
+  overflow: hidden;
 }
 
 .dest-card-links {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 8px 16px 14px;
+  border-top: 1px solid rgba(200, 197, 190, 0.12);
   display: flex;
   flex-direction: column;
   gap: 8px;
+  background: rgba(17, 17, 16, 0.5);
 }
 
 .dest-link-anchor {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   text-decoration: none;
-  padding: 2px 0;
+  padding: 3px 0;
   transition: color 0.2s;
 }
 
@@ -880,7 +925,7 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .dest-missions-grid {
+  .dest-missions-gallery {
     grid-template-columns: 1fr;
   }
 }
@@ -936,8 +981,14 @@
     justify-content: space-between;
   }
 
-  .dest-missions-grid {
+  .dest-missions-gallery {
     padding: 16px;
+  }
+
+  .dest-link-anchor {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 
   .about-footer-nav {
@@ -960,14 +1011,15 @@
     -webkit-backdrop-filter: none;
   }
 
-  .dest-drawer {
+  .dest-drawer,
+  .mission-links-drawer {
     transition: none !important;
   }
 
   .subnav-btn,
   .hover-dest-section,
   .dest-header-bar,
-  .dest-mission-card {
+  .mission-hover-node {
     transition: none !important;
   }
 }

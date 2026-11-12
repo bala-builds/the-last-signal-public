@@ -53,6 +53,8 @@ export default function About() {
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [pinnedSection, setPinnedSection] = useState<string | null>(null);
+  const [hoveredMission, setHoveredMission] = useState<string | null>(null);
+  const [pinnedMission, setPinnedMission] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState('section-01');
 
   // Compile all mission sources organized strictly into 3 sections
@@ -144,14 +146,22 @@ export default function About() {
   }, [filteredSections]);
 
   const isSectionExpanded = (id: string) => {
-    // If a search is active, keep all matched sections open
     if (searchQuery.trim().length > 0) return true;
-    // Otherwise open on hover OR on click (pinned)
     return hoveredSection === id || pinnedSection === id;
+  };
+
+  const isMissionExpanded = (id: string) => {
+    if (searchQuery.trim().length > 0) return true;
+    return hoveredMission === id || pinnedMission === id;
   };
 
   const handleToggleClick = (id: string) => {
     setPinnedSection(prev => prev === id ? null : id);
+  };
+
+  const handleMissionClick = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    setPinnedMission(prev => prev === id ? null : id);
   };
 
   const scrollTo = (id: string) => {
@@ -444,7 +454,7 @@ export default function About() {
             </div>
           </section>
 
-          {/* SECTION 05 — RESEARCH & REFERENCES (3 HOVER-EXPANDABLE SECTIONS) */}
+          {/* SECTION 05 — RESEARCH & REFERENCES (TWO-STAGE PROGRESSIVE HOVER DISCLOSURE) */}
           <section id="section-05" className="about-section sources-section">
             <div id="sources" className="anchor-target" />
             <div id="references" className="anchor-target" />
@@ -457,7 +467,7 @@ export default function About() {
               <div className="title-block">
                 <h2>RESEARCH & REFERENCES</h2>
                 <p className="subtitle">
-                  Primary evidence library structured into three planetary destination sections. Hover over any section to explore.
+                  Structured into three planetary destinations. Hover over any destination section to view mission names, then hover over any mission to reveal its primary source links.
                 </p>
               </div>
 
@@ -486,11 +496,11 @@ export default function About() {
 
                 <div className="ref-toolbar">
                   <span className="ref-count-badge" aria-live="polite">
-                    {totalReferencesCount} REFERENCES · 3 DESTINATION SECTIONS
+                    {totalReferencesCount} REFERENCES · 3 DESTINATIONS
                     {searchQuery && ' MATCHED'}
                   </span>
                   <span className="ref-hover-cue">
-                    {searchQuery ? 'SEARCH EXPANDED' : 'HOVER ANY SECTION TO EXPAND ⟶'}
+                    {searchQuery ? 'SEARCH RESULTS EXPANDED' : 'HOVER SECTION ⟶ HOVER MISSION TO REVEAL LINKS'}
                   </span>
                 </div>
               </div>
@@ -505,22 +515,23 @@ export default function About() {
                 /* THREE HOVER-EXPANDABLE DESTINATION SECTIONS */
                 <div className="three-destination-stack">
                   {filteredSections.map((sec) => {
-                    const expanded = isSectionExpanded(sec.id);
+                    const sectionOpen = isSectionExpanded(sec.id);
                     const sourceCount = sec.missions.reduce((acc, m) => acc + m.sources.length, 0);
 
                     return (
                       <div 
                         key={sec.id}
-                        className={`hover-dest-section ${expanded ? 'expanded' : ''}`}
+                        className={`hover-dest-section ${sectionOpen ? 'expanded' : ''}`}
                         onMouseEnter={() => setHoveredSection(sec.id)}
                         onMouseLeave={() => setHoveredSection(null)}
                       >
+                        {/* Level 1: Destination Header Bar */}
                         <div 
                           className="dest-header-bar"
                           onClick={() => handleToggleClick(sec.id)}
                           role="button"
                           tabIndex={0}
-                          aria-expanded={expanded}
+                          aria-expanded={sectionOpen}
                           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleToggleClick(sec.id); } }}
                         >
                           <div className="dest-meta-title">
@@ -536,33 +547,55 @@ export default function About() {
                               {sec.missions.length} MISSIONS · {sourceCount} SOURCES
                             </span>
                             <span className="dest-status-label" aria-hidden="true">
-                              {expanded ? 'EXPANDED −' : 'HOVER TO EXPAND +'}
+                              {sectionOpen ? 'EXPANDED −' : 'HOVER TO EXPAND +'}
                             </span>
                           </div>
                         </div>
 
-                        {/* Expandable Accordion Body */}
+                        {/* Level 1 Drawer: Displays Mission Names Only */}
                         <div className="dest-drawer">
                           <div className="dest-drawer-inner">
-                            <div className="dest-missions-grid">
-                              {sec.missions.map((m) => (
-                                <div key={m.id} className="dest-mission-card">
-                                  <div className="dest-card-head">
-                                    <span className="m-card-name">{m.mission}</span>
-                                    <span className="m-card-badge">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                            <div className="dest-missions-gallery">
+                              {sec.missions.map((m) => {
+                                const missionOpen = isMissionExpanded(m.id);
+
+                                return (
+                                  <div 
+                                    key={m.id} 
+                                    className={`mission-hover-node ${missionOpen ? 'active' : ''}`}
+                                    onMouseEnter={() => setHoveredMission(m.id)}
+                                    onMouseLeave={() => setHoveredMission(null)}
+                                    onClick={(e) => handleMissionClick(e, m.id)}
+                                  >
+                                    {/* Mission Name Button / Header */}
+                                    <div className="mission-node-head">
+                                      <span className="mission-node-title">{m.mission}</span>
+                                      <span className="mission-node-badge">
+                                        {m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}
+                                      </span>
+                                      <span className="mission-node-arrow" aria-hidden="true">
+                                        {missionOpen ? '▼' : '▶'}
+                                      </span>
+                                    </div>
+
+                                    {/* Level 2: Resource Links Revealed When Hovered/Active */}
+                                    <div className="mission-links-drawer">
+                                      <div className="mission-links-inner">
+                                        <ul className="dest-card-links">
+                                          {m.sources.map((s, idx) => (
+                                            <li key={s.href + idx}>
+                                              <a href={s.href} target="_blank" rel="noreferrer" className="dest-link-anchor" onClick={(e) => e.stopPropagation()}>
+                                                <span className="dest-link-text">{s.t} ↗</span>
+                                                <span className="dest-link-host">{getHostname(s.href)}</span>
+                                              </a>
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    </div>
                                   </div>
-                                  <ul className="dest-card-links">
-                                    {m.sources.map((s, idx) => (
-                                      <li key={s.href + idx}>
-                                        <a href={s.href} target="_blank" rel="noreferrer" className="dest-link-anchor">
-                                          <span className="dest-link-text">{s.t} ↗</span>
-                                          <span className="dest-link-host">{getHostname(s.href)}</span>
-                                        </a>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           </div>
                         </div>
