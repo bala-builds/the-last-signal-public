@@ -1,57 +1,217 @@
 /* ==========================================================================
-   THE LAST SIGNAL — RESEARCH & REFERENCES SECTION UPGRADE
-   Scoped strictly to the Primary Evidence Library (.sources-block)
-   Retaining all original typography, fonts, and layout across the About page.
+   THE LAST SIGNAL — ABOUT PAGE REDESIGN
+   Information architecture & Primary Evidence Library
+   Preserving authentic typography, colors, and editorial tone.
    ========================================================================== */
 
-.sources-block {
-  margin: 60px 0 80px;
-  padding-top: 50px;
-  border-top: 1px solid var(--line);
-}
-
-.sources-header h3 {
-  font-family: var(--display), serif;
-  font-size: 30px;
-  color: var(--ink);
-  margin: 0 0 10px;
-}
-
-.sources-lede {
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.7;
-  max-width: 780px;
-  margin: 0 0 32px;
+.about-redesign {
+  padding-bottom: 120px;
 }
 
 /* --------------------------------------------------------------------------
-   Search & Filter Controls
+   Section Directory Navigation Strip
    -------------------------------------------------------------------------- */
-.reference-controls {
-  margin-bottom: 24px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  padding: 18px 20px;
-  border-radius: 2px;
+.about-dir-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 48px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  font-family: var(--mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
 }
 
-.ref-search-wrap {
+.about-dir-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.dir-label {
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.about-dir-nav button {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  padding: 4px 6px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.about-dir-nav button:hover {
+  color: var(--ink);
+}
+
+.dir-dot {
+  color: var(--dim);
+  opacity: 0.6;
+}
+
+/* --------------------------------------------------------------------------
+   Header / Hero
+   -------------------------------------------------------------------------- */
+.about-header {
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 60px;
+}
+
+.about-header h1 {
+  margin: 0 0 20px;
+}
+
+.about-header .lede {
+  margin: 0 0 28px;
+  max-width: 840px;
+}
+
+.about-wave {
+  max-width: 300px;
+  opacity: 0.8;
+}
+
+.about-wave .wave {
+  width: 100%;
+  height: 38px;
+}
+
+/* --------------------------------------------------------------------------
+   Numbered About Block Structure
+   -------------------------------------------------------------------------- */
+.about-block {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 48px;
+  padding: 60px 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.anchor-mark {
+  position: absolute;
+  top: -100px;
+}
+
+.block-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.block-num {
+  font-family: var(--mono), monospace;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.block-tag {
+  font-family: var(--mono), monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+.block-body {
+  min-width: 0;
+}
+
+.block-body h2 {
+  font-size: clamp(32px, 3.8vw, 52px);
+  margin: 0 0 28px;
+  color: var(--ink);
+}
+
+.block-body h3 {
+  font-family: var(--mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+  text-transform: uppercase;
+  margin: 28px 0 10px;
+}
+
+.block-body h3:first-child {
+  margin-top: 0;
+}
+
+.block-body p {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--muted);
+  margin: 0 0 20px;
+}
+
+.block-body strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.block-body code {
+  font-family: var(--mono), monospace;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px 5px;
+  color: var(--ink);
+}
+
+.editorial-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+.editorial-note {
+  font-size: 13px !important;
+  color: var(--dim) !important;
+  font-style: italic;
+  margin-top: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   05 — RESEARCH & REFERENCES SECTION
+   -------------------------------------------------------------------------- */
+.sources-intro {
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  max-width: 820px;
+}
+
+.ref-controls-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 18px 22px;
+  margin-bottom: 24px;
+}
+
+.ref-search-field {
   position: relative;
   display: flex;
   align-items: center;
   margin-bottom: 14px;
 }
 
-.ref-search-icon {
+.ref-icon {
   position: absolute;
   left: 14px;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--dim);
   pointer-events: none;
 }
 
-.ref-search-input {
+.ref-input {
   width: 100%;
   background: var(--bg);
   border: 1px solid var(--line);
@@ -63,18 +223,18 @@
   transition: border-color 0.2s, background 0.2s;
 }
 
-.ref-search-input:focus {
+.ref-input:focus {
   outline: none;
   border-color: var(--ink);
   background: #171715;
 }
 
-.ref-search-input::placeholder {
+.ref-input::placeholder {
   color: var(--dim);
   font-size: 11px;
 }
 
-.ref-clear-btn {
+.ref-clear {
   position: absolute;
   right: 12px;
   background: transparent;
@@ -83,15 +243,14 @@
   font-family: var(--mono), monospace;
   font-size: 10px;
   padding: 4px 8px;
-  letter-spacing: 0.08em;
   cursor: pointer;
 }
 
-.ref-clear-btn:hover {
+.ref-clear:hover {
   color: var(--ink);
 }
 
-.ref-toolbar {
+.ref-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -100,69 +259,63 @@
   font-size: 11px;
 }
 
-.ref-count-badge {
+.ref-total {
   color: var(--muted);
   letter-spacing: 0.06em;
 }
 
-.ref-toggles {
+.ref-actions {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.ref-toggle-btn {
+.ref-actions button {
   background: transparent;
   border: 0;
   color: var(--muted);
   font-family: var(--mono), monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
-  padding: 3px 6px;
+  padding: 2px 4px;
   cursor: pointer;
   transition: color 0.2s;
 }
 
-.ref-toggle-btn:hover {
+.ref-actions button:hover {
   color: var(--ink);
 }
 
-.ref-toggles .divider {
+.ref-actions .slash {
   color: var(--dim);
 }
 
-.ref-empty-state {
+.ref-none {
   background: var(--panel);
   border: 1px solid var(--line);
   padding: 36px 24px;
   text-align: center;
-  border-radius: 2px;
   margin-top: 16px;
 }
 
-.ref-empty-state p {
-  font-size: 14px;
-  color: var(--muted);
+.ref-none p {
   margin: 0 0 16px;
+  color: var(--muted);
 }
 
-/* --------------------------------------------------------------------------
-   Category Cards & Accordions
-   -------------------------------------------------------------------------- */
-.ref-category-stack {
+/* Category Groups */
+.ref-groups-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.ref-category-card {
+.ref-group-box {
   background: var(--panel);
   border: 1px solid var(--line);
-  border-radius: 2px;
-  overflow: hidden;
 }
 
-.category-header-btn {
+.group-toggle-btn {
   width: 100%;
   display: flex;
   align-items: center;
@@ -177,18 +330,18 @@
   transition: background 0.2s;
 }
 
-.category-header-btn:hover {
-  background: rgba(37, 37, 34, 0.75);
+.group-toggle-btn:hover {
+  background: rgba(37, 37, 34, 0.7);
 }
 
-.cat-title-wrap {
+.group-label-wrap {
   display: flex;
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
 }
 
-.cat-name {
+.group-name {
   font-family: var(--mono), monospace;
   font-size: 11px;
   letter-spacing: 0.12em;
@@ -196,50 +349,46 @@
   font-weight: 600;
 }
 
-.cat-badge {
+.group-count {
   font-family: var(--mono), monospace;
   font-size: 9px;
   letter-spacing: 0.08em;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--line);
   padding: 2px 7px;
-  border-radius: 2px;
   color: var(--muted);
 }
 
-.accordion-caret {
+.group-caret {
   font-family: var(--mono), monospace;
   font-size: 15px;
   color: var(--muted);
-  line-height: 1;
 }
 
-/* Mission List inside Category */
-.mission-list {
+/* Mission Row inside Group */
+.group-missions {
   padding: 10px 14px 14px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.mission-ref-item {
+.mission-row {
   border: 1px solid rgba(200, 197, 190, 0.12);
   background: rgba(17, 17, 16, 0.45);
-  border-radius: 2px;
-  overflow: hidden;
   transition: border-color 0.2s, background 0.2s;
 }
 
-.mission-ref-item:hover {
+.mission-row:hover {
   border-color: rgba(200, 197, 190, 0.25);
 }
 
-.mission-ref-item.is-open {
+.mission-row.open {
   border-color: rgba(200, 197, 190, 0.35);
   background: rgba(17, 17, 16, 0.65);
 }
 
-.mission-header-btn {
+.mission-row-btn {
   width: 100%;
   display: flex;
   align-items: center;
@@ -253,11 +402,11 @@
   transition: background 0.2s;
 }
 
-.mission-header-btn:hover {
+.mission-row-btn:hover {
   background: rgba(255, 255, 255, 0.03);
 }
 
-.m-name {
+.m-title {
   font-family: var(--body), sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -265,7 +414,7 @@
   color: var(--ink);
 }
 
-.m-count {
+.m-sources-pill {
   font-family: var(--mono), monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
@@ -274,7 +423,7 @@
   margin-right: 14px;
 }
 
-.m-caret {
+.m-symbol {
   font-family: var(--mono), monospace;
   font-size: 13px;
   color: var(--muted);
@@ -282,8 +431,8 @@
   text-align: center;
 }
 
-/* Source Links inside Mission */
-.source-links {
+/* Links List */
+.m-links-list {
   list-style: none;
   margin: 0;
   padding: 2px 16px 10px;
@@ -292,15 +441,15 @@
   flex-direction: column;
 }
 
-.source-link-row {
+.m-links-list li {
   border-bottom: 1px solid rgba(200, 197, 190, 0.06);
 }
 
-.source-link-row:last-child {
+.m-links-list li:last-child {
   border-bottom: 0;
 }
 
-.source-anchor {
+.m-link-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -310,25 +459,25 @@
   transition: color 0.2s;
 }
 
-.source-anchor:hover .src-title {
+.m-link-item:hover .link-text {
   color: var(--ink);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-.source-anchor:hover .src-host {
+.m-link-item:hover .link-host {
   color: var(--ink);
   border-color: rgba(200, 197, 190, 0.4);
 }
 
-.src-title {
+.link-text {
   font-size: 13px;
   line-height: 1.5;
   color: var(--muted);
   transition: color 0.2s;
 }
 
-.src-host {
+.link-host {
   font-family: var(--mono), monospace;
   font-size: 10px;
   letter-spacing: 0.04em;
@@ -337,17 +486,78 @@
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(200, 197, 190, 0.15);
   padding: 2px 7px;
-  border-radius: 2px;
   transition: color 0.2s, border-color 0.2s;
 }
 
 /* --------------------------------------------------------------------------
-   Mobile Adaptations
+   06 — DISCLAIMERS
    -------------------------------------------------------------------------- */
+.disclaimer-note {
+  background: rgba(37, 37, 34, 0.35);
+  border-left: 2px solid var(--ink);
+  padding: 18px 22px;
+  margin-top: 24px;
+}
+
+.disclaimer-note p {
+  font-size: 13px !important;
+  line-height: 1.75 !important;
+  color: var(--muted);
+  margin: 0;
+}
+
+.disclaimer-note strong {
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Layout
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .about-block {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 48px 0;
+  }
+
+  .block-meta {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 12px;
+    border-bottom: 1px solid rgba(200, 197, 190, 0.1);
+    padding-bottom: 8px;
+  }
+
+  .editorial-columns {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
 @media (max-width: 680px) {
-  .source-anchor {
+  .about-header h1 {
+    font-size: 44px;
+  }
+
+  .m-link-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
+  }
+
+  .ref-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-dir-nav button,
+  .ref-actions button,
+  .group-toggle-btn,
+  .mission-row-btn,
+  .m-link-item {
+    transition: none !important;
   }
 }
