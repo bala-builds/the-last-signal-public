@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Frame } from './Site';
 import { records, type RecordInfo } from './archive';
@@ -6,15 +6,12 @@ import { activeRecords } from './films';
 import { storyCatalog, modelIds } from './films';
 import './about.css';
 
-// Mission categorization for primary evidence library (Section 05)
+// 3 Destination Groups for Section 05: Lunar, Mars, Deep Space
 const LUNAR_IDS = [
   'surveyor-3', 'apollo-17-lrv', 'ranger-7', 'surveyor-1',
   'apollo-11-surface', 'apollo-12-surface', 'apollo-14-surface',
   'apollo-15-surface', 'apollo-16-surface', 'apollo-17-surface',
-  'lro', 'lcross', 'ladee', 'grail'
-];
-
-const COMMERCIAL_LUNAR_IDS = [
+  'lro', 'lcross', 'ladee', 'grail',
   'peregrine-1', 'im-1-odysseus', 'im-2-athena', 'blue-ghost-1', 'lunar-trailblazer'
 ];
 
@@ -29,12 +26,19 @@ const DEEP_SPACE_IDS = [
   'pioneer-10', 'pioneer-11', 'voyager-1', 'voyager-2', 'new-horizons'
 ];
 
-interface MissionSourceGroup {
+interface MissionSourceItem {
   id: string;
   mission: string;
-  category: 'lunar' | 'commercial' | 'mars' | 'deep-space';
-  categoryLabel: string;
+  dest: 'lunar' | 'mars' | 'deep-space';
   sources: { t: string; href: string }[];
+}
+
+interface DestinationSection {
+  id: 'lunar' | 'mars' | 'deep-space';
+  no: string;
+  name: string;
+  subtitle: string;
+  missions: MissionSourceItem[];
 }
 
 function getHostname(urlStr: string): string {
@@ -47,63 +51,71 @@ function getHostname(urlStr: string): string {
 
 export default function About() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    'lunar': true,
-    'commercial': true,
-    'mars': true,
-    'deep-space': true,
-  });
-  const [expandedMissions, setExpandedMissions] = useState<Record<string, boolean>>({});
-  const [activeSection, setActiveSection] = useState('project');
+  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+  const [pinnedSection, setPinnedSection] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState('section-01');
 
-  // Compile all mission sources from archive records and active records
-  const allMissionGroups: MissionSourceGroup[] = useMemo(() => {
-    const list: MissionSourceGroup[] = [];
+  // Compile all mission sources organized strictly into 3 sections
+  const destinationSections: DestinationSection[] = useMemo(() => {
     const recordMap = new Map<string, RecordInfo>(records.map(r => [r.id, r]));
 
-    // Helper to resolve sources
-    const addMission = (id: string, cat: 'lunar' | 'commercial' | 'mars' | 'deep-space', catLabel: string) => {
-      const rec = recordMap.get(id);
-      const active = activeRecords.find(a => a.id === id);
-      
-      let missionName = rec ? rec.mission : (active ? active.mission : id);
-      let sources: { t: string; href: string }[] = [];
+    const buildMissions = (ids: string[], dest: 'lunar' | 'mars' | 'deep-space'): MissionSourceItem[] => {
+      return ids.map(id => {
+        const rec = recordMap.get(id);
+        const active = activeRecords.find(a => a.id === id);
+        const missionName = rec ? rec.mission : (active ? active.mission : id);
+        let sources: { t: string; href: string }[] = [];
 
-      if (rec && rec.sources && rec.sources.length > 0) {
-        sources = [...rec.sources];
-      } else if (active && active.source) {
-        sources = [{ t: `${active.mission} — Official NASA Mission Archive`, href: active.source }];
-      }
+        if (rec && rec.sources && rec.sources.length > 0) {
+          sources = [...rec.sources];
+        } else if (active && active.source) {
+          sources = [{ t: `${active.mission} — Official NASA Mission Archive`, href: active.source }];
+        }
 
-      if (sources.length > 0) {
-        list.push({
+        return {
           id,
           mission: missionName,
-          category: cat,
-          categoryLabel: catLabel,
+          dest,
           sources
-        });
-      }
+        };
+      }).filter(m => m.sources.length > 0);
     };
 
-    LUNAR_IDS.forEach(id => addMission(id, 'lunar', 'Lunar Missions'));
-    COMMERCIAL_LUNAR_IDS.forEach(id => addMission(id, 'commercial', 'Commercial Lunar Missions'));
-    MARS_IDS.forEach(id => addMission(id, 'mars', 'Mars Missions'));
-    DEEP_SPACE_IDS.forEach(id => addMission(id, 'deep-space', 'Deep Space Missions'));
-
-    return list;
+    return [
+      {
+        id: 'lunar',
+        no: '01',
+        name: 'LUNAR MISSIONS',
+        subtitle: 'NASA Apollo, Surveyor, Lunar Orbiters & CLPS Commercial Landers',
+        missions: buildMissions(LUNAR_IDS, 'lunar'),
+      },
+      {
+        id: 'mars',
+        no: '02',
+        name: 'MARS MISSIONS',
+        subtitle: 'Orbiters, Landers, Rovers & Atmospheric Probes at the Red Planet',
+        missions: buildMissions(MARS_IDS, 'mars'),
+      },
+      {
+        id: 'deep-space',
+        no: '03',
+        name: 'DEEP SPACE MISSIONS',
+        subtitle: 'Outer Planet Explorers & Interstellar Probes Beyond Planetary Boundaries',
+        missions: buildMissions(DEEP_SPACE_IDS, 'deep-space'),
+      },
+    ];
   }, []);
 
-  // Filter groups and missions based on search query
-  const filteredMissions = useMemo(() => {
+  // Filter sections and missions based on search query
+  const filteredSections = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return allMissionGroups;
+    if (!q) return destinationSections;
 
-    return allMissionGroups
-      .map(m => {
-        const missionMatches = m.mission.toLowerCase().includes(q) || m.categoryLabel.toLowerCase().includes(q);
-        const matchingSources = m.sources.filter(s => 
-          s.t.toLowerCase().includes(q) || 
+    return destinationSections.map(sec => {
+      const matchingMissions = sec.missions.map(m => {
+        const missionMatches = m.mission.toLowerCase().includes(q);
+        const matchingSources = m.sources.filter(s =>
+          s.t.toLowerCase().includes(q) ||
           s.href.toLowerCase().includes(q) ||
           getHostname(s.href).toLowerCase().includes(q)
         );
@@ -115,34 +127,31 @@ export default function About() {
           return { ...m, sources: matchingSources };
         }
         return null;
-      })
-      .filter((m): m is MissionSourceGroup => m !== null);
-  }, [allMissionGroups, searchQuery]);
+      }).filter((m): m is MissionSourceItem => m !== null);
 
-  // Total references count
-  const totalRefCounts = useMemo(() => {
-    return filteredMissions.reduce((acc, m) => acc + m.sources.length, 0);
-  }, [filteredMissions]);
+      return {
+        ...sec,
+        missions: matchingMissions
+      };
+    }).filter(sec => sec.missions.length > 0);
+  }, [destinationSections, searchQuery]);
 
-  const toggleGroup = (cat: string) => {
-    setExpandedGroups(prev => ({ ...prev, [cat]: !prev[cat] }));
+  // Total matching references
+  const totalReferencesCount = useMemo(() => {
+    return filteredSections.reduce((acc, sec) => {
+      return acc + sec.missions.reduce((mAcc, m) => mAcc + m.sources.length, 0);
+    }, 0);
+  }, [filteredSections]);
+
+  const isSectionExpanded = (id: string) => {
+    // If a search is active, keep all matched sections open
+    if (searchQuery.trim().length > 0) return true;
+    // Otherwise open on hover OR on click (pinned)
+    return hoveredSection === id || pinnedSection === id;
   };
 
-  const toggleMission = (id: string) => {
-    setExpandedMissions(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const expandAll = () => {
-    const g: Record<string, boolean> = { 'lunar': true, 'commercial': true, 'mars': true, 'deep-space': true };
-    const m: Record<string, boolean> = {};
-    allMissionGroups.forEach(item => { m[item.id] = true; });
-    setExpandedGroups(g);
-    setExpandedMissions(m);
-  };
-
-  const collapseAll = () => {
-    setExpandedGroups({ 'lunar': false, 'commercial': false, 'mars': false, 'deep-space': false });
-    setExpandedMissions({});
+  const handleToggleClick = (id: string) => {
+    setPinnedSection(prev => prev === id ? null : id);
   };
 
   const scrollTo = (id: string) => {
@@ -153,22 +162,12 @@ export default function About() {
     }
   };
 
-  // Group filtered missions by category
-  const groupedByCategory = useMemo(() => {
-    return {
-      lunar: filteredMissions.filter(m => m.category === 'lunar'),
-      commercial: filteredMissions.filter(m => m.category === 'commercial'),
-      mars: filteredMissions.filter(m => m.category === 'mars'),
-      'deep-space': filteredMissions.filter(m => m.category === 'deep-space'),
-    };
-  }, [filteredMissions]);
-
   return (
     <Frame>
       {() => (
         <article className="about-editorial-wrap">
-          {/* Sub-Navigation Bar */}
-          <nav className="about-subnav" aria-label="About page section directory">
+          {/* Sub-Navigation Directory Bar */}
+          <nav className="about-subnav" aria-label="About page directory">
             <div className="about-subnav-inner">
               <span className="subnav-label">INDEX /</span>
               <button 
@@ -210,6 +209,7 @@ export default function About() {
             </div>
           </nav>
 
+          {/* Hero Header */}
           <header className="about-hero">
             <p className="eyebrow" data-reveal>THE LAST SIGNAL / EDITORIAL COMPENDIUM</p>
             <h1 data-reveal>HISTORY,<br />NOT MYTHOLOGY.</h1>
@@ -444,24 +444,24 @@ export default function About() {
             </div>
           </section>
 
-          {/* SECTION 05 — RESEARCH & REFERENCES */}
+          {/* SECTION 05 — RESEARCH & REFERENCES (3 HOVER-EXPANDABLE SECTIONS) */}
           <section id="section-05" className="about-section sources-section">
             <div id="sources" className="anchor-target" />
             <div id="references" className="anchor-target" />
             
             <div className="section-meta">
               <span className="section-number">05</span>
-              <span className="section-tag">PRIMARY SOURCES</span>
+              <span className="section-tag">PRIMARY EVIDENCE</span>
             </div>
             <div className="section-content">
               <div className="title-block">
                 <h2>RESEARCH & REFERENCES</h2>
                 <p className="subtitle">
-                  An expandable primary evidence library organized by destination, mission, and source.
+                  Primary evidence library structured into three planetary destination sections. Hover over any section to explore.
                 </p>
               </div>
 
-              {/* Search & Filter Controls */}
+              {/* Search Bar */}
               <div className="reference-controls">
                 <div className="ref-search-wrap">
                   <span className="ref-search-icon" aria-hidden="true">⚲</span>
@@ -486,234 +486,95 @@ export default function About() {
 
                 <div className="ref-toolbar">
                   <span className="ref-count-badge" aria-live="polite">
-                    {totalRefCounts} {totalRefCounts === 1 ? 'REFERENCE' : 'REFERENCES'} · {filteredMissions.length} {filteredMissions.length === 1 ? 'MISSION' : 'MISSIONS'}
+                    {totalReferencesCount} REFERENCES · 3 DESTINATION SECTIONS
                     {searchQuery && ' MATCHED'}
                   </span>
-                  <div className="ref-toggles">
-                    <button className="ref-toggle-btn" onClick={expandAll}>EXPAND ALL</button>
-                    <span className="divider">/</span>
-                    <button className="ref-toggle-btn" onClick={collapseAll}>COLLAPSE ALL</button>
-                  </div>
+                  <span className="ref-hover-cue">
+                    {searchQuery ? 'SEARCH EXPANDED' : 'HOVER ANY SECTION TO EXPAND ⟶'}
+                  </span>
                 </div>
               </div>
 
-              {filteredMissions.length === 0 ? (
+              {filteredSections.length === 0 ? (
                 <div className="ref-empty-state">
                   <h3>No references match your query</h3>
                   <p>Try searching for a different spacecraft, planet, or research keyword.</p>
                   <button className="outline" onClick={() => setSearchQuery('')}>RESET SEARCH</button>
                 </div>
               ) : (
-                <div className="ref-category-stack">
-                  {/* Category 1: Lunar Missions */}
-                  {groupedByCategory.lunar.length > 0 && (
-                    <div className="ref-category-card">
-                      <button 
-                        className="category-header-btn" 
-                        aria-expanded={expandedGroups['lunar']}
-                        onClick={() => toggleGroup('lunar')}
+                /* THREE HOVER-EXPANDABLE DESTINATION SECTIONS */
+                <div className="three-destination-stack">
+                  {filteredSections.map((sec) => {
+                    const expanded = isSectionExpanded(sec.id);
+                    const sourceCount = sec.missions.reduce((acc, m) => acc + m.sources.length, 0);
+
+                    return (
+                      <div 
+                        key={sec.id}
+                        className={`hover-dest-section ${expanded ? 'expanded' : ''}`}
+                        onMouseEnter={() => setHoveredSection(sec.id)}
+                        onMouseLeave={() => setHoveredSection(null)}
                       >
-                        <div className="cat-title-wrap">
-                          <span className="cat-index">01</span>
-                          <span className="cat-name">LUNAR MISSIONS</span>
-                          <span className="cat-badge">
-                            {groupedByCategory.lunar.reduce((a, m) => a + m.sources.length, 0)} REFERENCES
-                          </span>
-                        </div>
-                        <span className="accordion-caret">{expandedGroups['lunar'] ? '−' : '+'}</span>
-                      </button>
-
-                      {expandedGroups['lunar'] && (
-                        <div className="mission-list">
-                          {groupedByCategory.lunar.map(m => (
-                            <div key={m.id} className="mission-ref-item">
-                              <button 
-                                className="mission-header-btn"
-                                aria-expanded={expandedMissions[m.id] !== false}
-                                onClick={() => toggleMission(m.id)}
-                              >
-                                <span className="m-name">{m.mission}</span>
-                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
-                              </button>
-                              
-                              {expandedMissions[m.id] !== false && (
-                                <ul className="source-links">
-                                  {m.sources.map((s, idx) => (
-                                    <li key={s.href + idx} className="source-link-row">
-                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
-                                        <span className="src-title">{s.t}</span>
-                                        <span className="src-host">{getHostname(s.href)} ↗</span>
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
+                        <div 
+                          className="dest-header-bar"
+                          onClick={() => handleToggleClick(sec.id)}
+                          role="button"
+                          tabIndex={0}
+                          aria-expanded={expanded}
+                          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleToggleClick(sec.id); } }}
+                        >
+                          <div className="dest-meta-title">
+                            <span className="dest-idx">{sec.no}</span>
+                            <div className="dest-titles">
+                              <span className="dest-name">{sec.name}</span>
+                              <span className="dest-sub">{sec.subtitle}</span>
                             </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                          </div>
 
-                  {/* Category 2: Commercial Lunar Missions */}
-                  {groupedByCategory.commercial.length > 0 && (
-                    <div className="ref-category-card">
-                      <button 
-                        className="category-header-btn" 
-                        aria-expanded={expandedGroups['commercial']}
-                        onClick={() => toggleGroup('commercial')}
-                      >
-                        <div className="cat-title-wrap">
-                          <span className="cat-index">02</span>
-                          <span className="cat-name">COMMERCIAL LUNAR MISSIONS (CLPS)</span>
-                          <span className="cat-badge">
-                            {groupedByCategory.commercial.reduce((a, m) => a + m.sources.length, 0)} REFERENCES
-                          </span>
+                          <div className="dest-meta-right">
+                            <span className="dest-pill">
+                              {sec.missions.length} MISSIONS · {sourceCount} SOURCES
+                            </span>
+                            <span className="dest-status-label" aria-hidden="true">
+                              {expanded ? 'EXPANDED −' : 'HOVER TO EXPAND +'}
+                            </span>
+                          </div>
                         </div>
-                        <span className="accordion-caret">{expandedGroups['commercial'] ? '−' : '+'}</span>
-                      </button>
 
-                      {expandedGroups['commercial'] && (
-                        <div className="mission-list">
-                          {groupedByCategory.commercial.map(m => (
-                            <div key={m.id} className="mission-ref-item">
-                              <button 
-                                className="mission-header-btn"
-                                aria-expanded={expandedMissions[m.id] !== false}
-                                onClick={() => toggleMission(m.id)}
-                              >
-                                <span className="m-name">{m.mission}</span>
-                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
-                              </button>
-                              
-                              {expandedMissions[m.id] !== false && (
-                                <ul className="source-links">
-                                  {m.sources.map((s, idx) => (
-                                    <li key={s.href + idx} className="source-link-row">
-                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
-                                        <span className="src-title">{s.t}</span>
-                                        <span className="src-host">{getHostname(s.href)} ↗</span>
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
+                        {/* Expandable Accordion Body */}
+                        <div className="dest-drawer">
+                          <div className="dest-drawer-inner">
+                            <div className="dest-missions-grid">
+                              {sec.missions.map((m) => (
+                                <div key={m.id} className="dest-mission-card">
+                                  <div className="dest-card-head">
+                                    <span className="m-card-name">{m.mission}</span>
+                                    <span className="m-card-badge">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                  </div>
+                                  <ul className="dest-card-links">
+                                    {m.sources.map((s, idx) => (
+                                      <li key={s.href + idx}>
+                                        <a href={s.href} target="_blank" rel="noreferrer" className="dest-link-anchor">
+                                          <span className="dest-link-text">{s.t} ↗</span>
+                                          <span className="dest-link-host">{getHostname(s.href)}</span>
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
                             </div>
-                          ))}
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Category 3: Mars Missions */}
-                  {groupedByCategory.mars.length > 0 && (
-                    <div className="ref-category-card">
-                      <button 
-                        className="category-header-btn" 
-                        aria-expanded={expandedGroups['mars']}
-                        onClick={() => toggleGroup('mars')}
-                      >
-                        <div className="cat-title-wrap">
-                          <span className="cat-index">03</span>
-                          <span className="cat-name">MARS MISSIONS</span>
-                          <span className="cat-badge">
-                            {groupedByCategory.mars.reduce((a, m) => a + m.sources.length, 0)} REFERENCES
-                          </span>
-                        </div>
-                        <span className="accordion-caret">{expandedGroups['mars'] ? '−' : '+'}</span>
-                      </button>
-
-                      {expandedGroups['mars'] && (
-                        <div className="mission-list">
-                          {groupedByCategory.mars.map(m => (
-                            <div key={m.id} className="mission-ref-item">
-                              <button 
-                                className="mission-header-btn"
-                                aria-expanded={expandedMissions[m.id] !== false}
-                                onClick={() => toggleMission(m.id)}
-                              >
-                                <span className="m-name">{m.mission}</span>
-                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
-                              </button>
-                              
-                              {expandedMissions[m.id] !== false && (
-                                <ul className="source-links">
-                                  {m.sources.map((s, idx) => (
-                                    <li key={s.href + idx} className="source-link-row">
-                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
-                                        <span className="src-title">{s.t}</span>
-                                        <span className="src-host">{getHostname(s.href)} ↗</span>
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Category 4: Deep Space Missions */}
-                  {groupedByCategory['deep-space'].length > 0 && (
-                    <div className="ref-category-card">
-                      <button 
-                        className="category-header-btn" 
-                        aria-expanded={expandedGroups['deep-space']}
-                        onClick={() => toggleGroup('deep-space')}
-                      >
-                        <div className="cat-title-wrap">
-                          <span className="cat-index">04</span>
-                          <span className="cat-name">DEEP SPACE MISSIONS</span>
-                          <span className="cat-badge">
-                            {groupedByCategory['deep-space'].reduce((a, m) => a + m.sources.length, 0)} REFERENCES
-                          </span>
-                        </div>
-                        <span className="accordion-caret">{expandedGroups['deep-space'] ? '−' : '+'}</span>
-                      </button>
-
-                      {expandedGroups['deep-space'] && (
-                        <div className="mission-list">
-                          {groupedByCategory['deep-space'].map(m => (
-                            <div key={m.id} className="mission-ref-item">
-                              <button 
-                                className="mission-header-btn"
-                                aria-expanded={expandedMissions[m.id] !== false}
-                                onClick={() => toggleMission(m.id)}
-                              >
-                                <span className="m-name">{m.mission}</span>
-                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
-                              </button>
-                              
-                              {expandedMissions[m.id] !== false && (
-                                <ul className="source-links">
-                                  {m.sources.map((s, idx) => (
-                                    <li key={s.href + idx} className="source-link-row">
-                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
-                                        <span className="src-title">{s.t}</span>
-                                        <span className="src-host">{getHostname(s.href)} ↗</span>
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
           </section>
 
-          {/* SECTION 06 — IMAGE CREDITS & DISCLAIMERS */}
+          {/* SECTION 06 — IMAGE CREDITS & DISCLAIMERS (NO OPEN FONT LICENSING) */}
           <section id="section-06" className="about-section">
             <div className="section-meta">
               <span className="section-number">06</span>
@@ -725,34 +586,20 @@ export default function About() {
                 <p className="subtitle">Attributions, intellectual property, and educational terms.</p>
               </div>
 
-              <div className="credits-grid">
-                <div className="credit-block">
-                  <h3>Historical Image Provenance</h3>
-                  <p className="credit-p">
-                    Photographs and instrument scans are credited beside each appearance. Significant source records include:
-                  </p>
-                  <ul className="credit-bullets">
-                    <li><strong>Surveyor 3:</strong> NASA, AS12-48-7121 and AS12-48-7133.</li>
-                    <li><strong>Apollo 17:</strong> NASA, AS17-137-20979 and AS17-145-22162.</li>
-                    <li><strong>Opportunity:</strong> NASA/JPL-Caltech, PIA06739 and PIA17759.</li>
-                    <li><strong>Lunar Reconnaissance Orbiter:</strong> NASA/GSFC/Arizona State University (LROC).</li>
-                    <li><strong>Mars Reconnaissance Orbiter / Curiosity / Perseverance:</strong> NASA/JPL-Caltech/MSSS.</li>
-                  </ul>
-                  <p className="credit-note">Existing illustrative reconstructions are labeled and are not authentic NASA photographs.</p>
-                </div>
-
-                <div className="credit-block">
-                  <h3>Open Font Licensing</h3>
-                  <p className="credit-p">
-                    Typography across THE LAST SIGNAL is rendered using self-hosted open fonts:
-                  </p>
-                  <ul className="credit-bullets">
-                    <li><strong>Cormorant Garamond:</strong> Designed by Christian Thalmann (SIL Open Font License).</li>
-                    <li><strong>Inter:</strong> Designed by Rasmus Andersson (SIL Open Font License).</li>
-                    <li><strong>IBM Plex Mono:</strong> Designed by Mike Abbink and Bold Monday (SIL Open Font License).</li>
-                  </ul>
-                  <p className="credit-note">Full font license texts are included in the source code distribution.</p>
-                </div>
+              <div className="credit-block full-width-credit">
+                <h3>Historical Image Provenance</h3>
+                <p className="credit-p">
+                  Photographs and instrument scans are credited beside each appearance throughout the archive. Significant source records include:
+                </p>
+                <ul className="credit-bullets">
+                  <li><strong>Surveyor 3:</strong> NASA, AS12-48-7121 and AS12-48-7133.</li>
+                  <li><strong>Apollo 17:</strong> NASA, AS17-137-20979 and AS17-145-22162.</li>
+                  <li><strong>Opportunity:</strong> NASA/JPL-Caltech, PIA06739 and PIA17759.</li>
+                  <li><strong>Lunar Reconnaissance Orbiter:</strong> NASA/GSFC/Arizona State University (LROC).</li>
+                  <li><strong>Mars Reconnaissance Orbiter / Curiosity / Perseverance:</strong> NASA/JPL-Caltech/MSSS.</li>
+                  <li><strong>Commercial and International Partners:</strong> Retain their individual terms, credits, and planetary datasets.</li>
+                </ul>
+                <p className="credit-note">Existing illustrative reconstructions are labeled and are not authentic NASA photographs.</p>
               </div>
 
               <div className="disclaimer-callout">
