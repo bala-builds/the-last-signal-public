@@ -43,7 +43,7 @@ Fork this repository, create a branch, make your change and open a pull request.
 
 ## Evidence and media
 
-Source URLs, image descriptions and credits are recorded in STORY-SOURCE-LEDGER.json and beside the scenes. NASA photographs, science products, diagrams, artist concepts and symbolic illustrations are labeled separately. Educational 3D exteriors are not exact flight CAD, real interiors, live telemetry or accident reconstructions. Historical scene dates and later context-image dates are kept separate.
+Source URLs, Image descriptions and credits are recorded in STORY-SOURCE-LEDGER.json and beside the scenes. NASA photographs, science products, diagrams, artist concepts and symbolic illustrations are labeled separately. Educational 3D exteriors are not exact flight CAD, real interiors, live telemetry or accident reconstructions. Historical scene dates and later context-image dates are kept separate.
 
 Animation uses React, Three.js, CSS and SVG. No Google Flow videos or invented final words are presented as NASA records. The site is independent and is not endorsed by NASA.
 
