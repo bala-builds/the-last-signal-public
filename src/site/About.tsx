@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Frame } from './Site';
+import { Frame, Wave } from './Site';
 import { records, type RecordInfo } from './archive';
 import { activeRecords } from './films';
 import { storyCatalog, modelIds } from './films';
@@ -53,6 +53,7 @@ export default function About() {
     'mars': true,
     'deep-space': true,
   });
+  // Missions are COLLAPSED by default for a clean, non-overwhelming initial view
   const [expandedMissions, setExpandedMissions] = useState<Record<string, boolean>>({});
   const [activeSection, setActiveSection] = useState('project');
 
@@ -61,7 +62,6 @@ export default function About() {
     const list: MissionSourceGroup[] = [];
     const recordMap = new Map<string, RecordInfo>(records.map(r => [r.id, r]));
 
-    // Helper to resolve sources
     const addMission = (id: string, cat: 'lunar' | 'commercial' | 'mars' | 'deep-space', catLabel: string) => {
       const rec = recordMap.get(id);
       const active = activeRecords.find(a => a.id === id);
@@ -124,6 +124,12 @@ export default function About() {
     return filteredMissions.reduce((acc, m) => acc + m.sources.length, 0);
   }, [filteredMissions]);
 
+  const isMissionOpen = (id: string) => {
+    // When searching, auto-expand matching missions so the reader sees the results directly
+    if (searchQuery.trim().length > 0) return true;
+    return !!expandedMissions[id];
+  };
+
   const toggleGroup = (cat: string) => {
     setExpandedGroups(prev => ({ ...prev, [cat]: !prev[cat] }));
   };
@@ -167,10 +173,10 @@ export default function About() {
     <Frame>
       {() => (
         <article className="about-editorial-wrap">
-          {/* Sub-Navigation Bar */}
-          <nav className="about-subnav" aria-label="About page section directory">
+          {/* Sub-Navigation Directory Bar */}
+          <nav className="about-subnav" aria-label="About page directory">
             <div className="about-subnav-inner">
-              <span className="subnav-label">INDEX /</span>
+              <span className="subnav-label">SECTIONS /</span>
               <button 
                 className={`subnav-btn ${activeSection === 'section-01' ? 'active' : ''}`}
                 onClick={() => scrollTo('section-01')}
@@ -210,21 +216,24 @@ export default function About() {
             </div>
           </nav>
 
+          {/* Hero Area with Signature Telemetry Wave */}
           <header className="about-hero">
-            <p className="eyebrow" data-reveal>THE LAST SIGNAL / EDITORIAL COMPENDIUM</p>
+            <p className="eyebrow" data-reveal>THE LAST SIGNAL / ARCHIVAL OVERVIEW</p>
             <h1 data-reveal>HISTORY,<br />NOT MYTHOLOGY.</h1>
             <p className="lede" data-reveal>
               An independent interactive archive and educational storytelling project dedicated to 
               NASA's distant explorers across the Moon, Mars, and deep space.
             </p>
-            <div className="hero-divider" />
+            <div className="hero-wave-strip" aria-hidden="true">
+              <Wave active={true} variant={1} />
+            </div>
           </header>
 
           {/* SECTION 01 — THE PROJECT */}
           <section id="section-01" className="about-section">
             <div className="section-meta">
               <span className="section-number">01</span>
-              <span className="section-tag">PROJECT FOUNDATION</span>
+              <span className="section-tag">THE PROJECT</span>
             </div>
             <div className="section-content">
               <div className="title-block">
@@ -237,7 +246,7 @@ export default function About() {
                   <strong>THE LAST SIGNAL</strong> is an educational storytelling archive created to document 
                   humanity’s interplanetary explorers with rigorous scientific and historical fidelity. Space exploration 
                   is frequently retold through romanticized folklore or oversimplified headlines. This archive exists to return 
-                  to primary sources: the raw telemetry logs, engineering challenges, planetary photography, and verified scientific 
+                  to primary sources: raw telemetry logs, engineering challenges, planetary photography, and verified scientific 
                   findings that define each spacecraft’s historical journey.
                 </p>
                 <p>
@@ -247,26 +256,35 @@ export default function About() {
                 </p>
               </div>
 
-              <div className="stats-metric-strip">
-                <div className="metric-box">
-                  <span className="metric-val">{storyCatalog.length}</span>
-                  <span className="metric-label">MISSION STORIES</span>
-                  <span className="metric-desc">8–12 illustrated scenes each, linked directly to NASA documentation.</span>
+              {/* Refined Typographic Metric Strip (Editorial, non-SaaS) */}
+              <div className="editorial-metrics">
+                <div className="metric-col">
+                  <span className="metric-num">{storyCatalog.length}</span>
+                  <div className="metric-info">
+                    <strong>PICTURE-BOOK STORIES</strong>
+                    <span>8–12 illustrated scenes each, linked directly to NASA documentation.</span>
+                  </div>
                 </div>
-                <div className="metric-box">
-                  <span className="metric-val">{records.length}</span>
-                  <span className="metric-label">ARCHIVE RECORDS</span>
-                  <span className="metric-desc">Documented hardware dossiers, timelines, specifications, and legacies.</span>
+                <div className="metric-col">
+                  <span className="metric-num">{records.length}</span>
+                  <div className="metric-info">
+                    <strong>ARCHIVE RECORDS</strong>
+                    <span>Concluded hardware dossiers, timelines, specifications, and legacies.</span>
+                  </div>
                 </div>
-                <div className="metric-box">
-                  <span className="metric-val">{activeRecords.length}</span>
-                  <span className="metric-label">ACTIVE EXPLORERS</span>
-                  <span className="metric-desc">Still Exploring collection: ongoing missions with verified dated status.</span>
+                <div className="metric-col">
+                  <span className="metric-num">{String(activeRecords.length).padStart(2, '0')}</span>
+                  <div className="metric-info">
+                    <strong>STILL EXPLORING</strong>
+                    <span>Active ongoing missions with verified, dated status; no invented endings.</span>
+                  </div>
                 </div>
-                <div className="metric-box">
-                  <span className="metric-val">{modelIds.length}</span>
-                  <span className="metric-label">3D HARDWARE STUDIES</span>
-                  <span className="metric-desc">Interactive Three.js exterior models preserving part callouts and scale.</span>
+                <div className="metric-col">
+                  <span className="metric-num">{modelIds.length}</span>
+                  <div className="metric-info">
+                    <strong>3D HARDWARE STUDIES</strong>
+                    <span>Interactive Three.js exterior models preserving part callouts and scale.</span>
+                  </div>
                 </div>
               </div>
 
@@ -283,7 +301,7 @@ export default function About() {
           <section id="section-02" className="about-section">
             <div className="section-meta">
               <span className="section-number">02</span>
-              <span className="section-tag">VISUAL INTEGRITY</span>
+              <span className="section-tag">INTEGRITY</span>
             </div>
             <div className="section-content">
               <div className="title-block">
@@ -293,7 +311,7 @@ export default function About() {
 
               <div className="grid-two-col">
                 <div className="archival-card">
-                  <span className="card-badge">PRIMARY RECORDS</span>
+                  <span className="card-badge">PRIMARY SCIENTIFIC RECORDS</span>
                   <h3>Historical NASA Photographs</h3>
                   <p>
                     Archival mission photographs are preserved and credited beside each scene with their original catalog identifiers 
@@ -304,7 +322,7 @@ export default function About() {
                 </div>
 
                 <div className="archival-card">
-                  <span className="card-badge">EDUCATIONAL ART</span>
+                  <span className="card-badge">EDUCATIONAL CONTEXT</span>
                   <h3>Illustrative AI-Generated Scenes</h3>
                   <p>
                     Where historical photography was impossible—such as deep-space cruise phases, atmospheric entry trajectories, 
@@ -314,7 +332,7 @@ export default function About() {
                 </div>
 
                 <div className="archival-card">
-                  <span className="card-badge">CONCEPTUAL MODEL</span>
+                  <span className="card-badge">CONCEPTUAL CUTAWAY</span>
                   <h3>Imagined Surveyor Cutaway</h3>
                   <p>
                     The optional Surveyor 3 cutaway animation illustrates an imagined mechanical interior. It is presented strictly 
@@ -324,8 +342,8 @@ export default function About() {
                 </div>
 
                 <div className="archival-card">
-                  <span className="card-badge">INTERFACE DESIGN</span>
-                  <h3>Recreated Waveforms & Signals</h3>
+                  <span className="card-badge">RECREATED INTERFACE</span>
+                  <h3>Interface Waveforms & Signals</h3>
                   <p>
                     All interface waveforms, carrier-lock animations, telemetry traces, and signal status pulses are aesthetic, 
                     recreated interface elements. <strong>They are not actual NASA radio transmission data or recorded telemetry.</strong> 
@@ -340,7 +358,7 @@ export default function About() {
           <section id="section-03" className="about-section">
             <div className="section-meta">
               <span className="section-number">03</span>
-              <span className="section-tag">HISTORICAL METHOD</span>
+              <span className="section-tag">METHODOLOGY</span>
             </div>
             <div className="section-content">
               <div className="title-block">
@@ -396,7 +414,7 @@ export default function About() {
           <section id="section-04" className="about-section">
             <div className="section-meta">
               <span className="section-number">04</span>
-              <span className="section-tag">INCLUSION</span>
+              <span className="section-tag">ACCESSIBILITY</span>
             </div>
             <div className="section-content">
               <div className="title-block">
@@ -451,7 +469,7 @@ export default function About() {
             
             <div className="section-meta">
               <span className="section-number">05</span>
-              <span className="section-tag">PRIMARY SOURCES</span>
+              <span className="section-tag">PRIMARY EVIDENCE</span>
             </div>
             <div className="section-content">
               <div className="title-block">
@@ -487,7 +505,7 @@ export default function About() {
                 <div className="ref-toolbar">
                   <span className="ref-count-badge" aria-live="polite">
                     {totalRefCounts} {totalRefCounts === 1 ? 'REFERENCE' : 'REFERENCES'} · {filteredMissions.length} {filteredMissions.length === 1 ? 'MISSION' : 'MISSIONS'}
-                    {searchQuery && ' MATCHED'}
+                    {searchQuery ? ' MATCHED (AUTO-EXPANDED)' : ''}
                   </span>
                   <div className="ref-toggles">
                     <button className="ref-toggle-btn" onClick={expandAll}>EXPAND ALL</button>
@@ -500,7 +518,7 @@ export default function About() {
               {filteredMissions.length === 0 ? (
                 <div className="ref-empty-state">
                   <h3>No references match your query</h3>
-                  <p>Try searching for a different spacecraft, planet, or research keyword.</p>
+                  <p>Try searching for a different spacecraft name, planet, or research keyword.</p>
                   <button className="outline" onClick={() => setSearchQuery('')}>RESET SEARCH</button>
                 </div>
               ) : (
@@ -525,32 +543,35 @@ export default function About() {
 
                       {expandedGroups['lunar'] && (
                         <div className="mission-list">
-                          {groupedByCategory.lunar.map(m => (
-                            <div key={m.id} className="mission-ref-item">
-                              <button 
-                                className="mission-header-btn"
-                                aria-expanded={expandedMissions[m.id] !== false}
-                                onClick={() => toggleMission(m.id)}
-                              >
-                                <span className="m-name">{m.mission}</span>
-                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
-                              </button>
-                              
-                              {expandedMissions[m.id] !== false && (
-                                <ul className="source-links">
-                                  {m.sources.map((s, idx) => (
-                                    <li key={s.href + idx} className="source-link-row">
-                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
-                                        <span className="src-title">{s.t}</span>
-                                        <span className="src-host">{getHostname(s.href)} ↗</span>
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
+                          {groupedByCategory.lunar.map(m => {
+                            const open = isMissionOpen(m.id);
+                            return (
+                              <div key={m.id} className={`mission-ref-item ${open ? 'is-open' : ''}`}>
+                                <button 
+                                  className="mission-header-btn"
+                                  aria-expanded={open}
+                                  onClick={() => toggleMission(m.id)}
+                                >
+                                  <span className="m-name">{m.mission}</span>
+                                  <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                  <span className="m-caret">{open ? '−' : '+'}</span>
+                                </button>
+                                
+                                {open && (
+                                  <ul className="source-links">
+                                    {m.sources.map((s, idx) => (
+                                      <li key={s.href + idx} className="source-link-row">
+                                        <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
+                                          <span className="src-title">{s.t}</span>
+                                          <span className="src-host">{getHostname(s.href)} ↗</span>
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
@@ -576,32 +597,35 @@ export default function About() {
 
                       {expandedGroups['commercial'] && (
                         <div className="mission-list">
-                          {groupedByCategory.commercial.map(m => (
-                            <div key={m.id} className="mission-ref-item">
-                              <button 
-                                className="mission-header-btn"
-                                aria-expanded={expandedMissions[m.id] !== false}
-                                onClick={() => toggleMission(m.id)}
-                              >
-                                <span className="m-name">{m.mission}</span>
-                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
-                              </button>
-                              
-                              {expandedMissions[m.id] !== false && (
-                                <ul className="source-links">
-                                  {m.sources.map((s, idx) => (
-                                    <li key={s.href + idx} className="source-link-row">
-                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
-                                        <span className="src-title">{s.t}</span>
-                                        <span className="src-host">{getHostname(s.href)} ↗</span>
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
+                          {groupedByCategory.commercial.map(m => {
+                            const open = isMissionOpen(m.id);
+                            return (
+                              <div key={m.id} className={`mission-ref-item ${open ? 'is-open' : ''}`}>
+                                <button 
+                                  className="mission-header-btn"
+                                  aria-expanded={open}
+                                  onClick={() => toggleMission(m.id)}
+                                >
+                                  <span className="m-name">{m.mission}</span>
+                                  <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                  <span className="m-caret">{open ? '−' : '+'}</span>
+                                </button>
+                                
+                                {open && (
+                                  <ul className="source-links">
+                                    {m.sources.map((s, idx) => (
+                                      <li key={s.href + idx} className="source-link-row">
+                                        <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
+                                          <span className="src-title">{s.t}</span>
+                                          <span className="src-host">{getHostname(s.href)} ↗</span>
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
@@ -627,32 +651,35 @@ export default function About() {
 
                       {expandedGroups['mars'] && (
                         <div className="mission-list">
-                          {groupedByCategory.mars.map(m => (
-                            <div key={m.id} className="mission-ref-item">
-                              <button 
-                                className="mission-header-btn"
-                                aria-expanded={expandedMissions[m.id] !== false}
-                                onClick={() => toggleMission(m.id)}
-                              >
-                                <span className="m-name">{m.mission}</span>
-                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
-                              </button>
-                              
-                              {expandedMissions[m.id] !== false && (
-                                <ul className="source-links">
-                                  {m.sources.map((s, idx) => (
-                                    <li key={s.href + idx} className="source-link-row">
-                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
-                                        <span className="src-title">{s.t}</span>
-                                        <span className="src-host">{getHostname(s.href)} ↗</span>
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
+                          {groupedByCategory.mars.map(m => {
+                            const open = isMissionOpen(m.id);
+                            return (
+                              <div key={m.id} className={`mission-ref-item ${open ? 'is-open' : ''}`}>
+                                <button 
+                                  className="mission-header-btn"
+                                  aria-expanded={open}
+                                  onClick={() => toggleMission(m.id)}
+                                >
+                                  <span className="m-name">{m.mission}</span>
+                                  <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                  <span className="m-caret">{open ? '−' : '+'}</span>
+                                </button>
+                                
+                                {open && (
+                                  <ul className="source-links">
+                                    {m.sources.map((s, idx) => (
+                                      <li key={s.href + idx} className="source-link-row">
+                                        <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
+                                          <span className="src-title">{s.t}</span>
+                                          <span className="src-host">{getHostname(s.href)} ↗</span>
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
@@ -678,32 +705,35 @@ export default function About() {
 
                       {expandedGroups['deep-space'] && (
                         <div className="mission-list">
-                          {groupedByCategory['deep-space'].map(m => (
-                            <div key={m.id} className="mission-ref-item">
-                              <button 
-                                className="mission-header-btn"
-                                aria-expanded={expandedMissions[m.id] !== false}
-                                onClick={() => toggleMission(m.id)}
-                              >
-                                <span className="m-name">{m.mission}</span>
-                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
-                              </button>
-                              
-                              {expandedMissions[m.id] !== false && (
-                                <ul className="source-links">
-                                  {m.sources.map((s, idx) => (
-                                    <li key={s.href + idx} className="source-link-row">
-                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
-                                        <span className="src-title">{s.t}</span>
-                                        <span className="src-host">{getHostname(s.href)} ↗</span>
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
+                          {groupedByCategory['deep-space'].map(m => {
+                            const open = isMissionOpen(m.id);
+                            return (
+                              <div key={m.id} className={`mission-ref-item ${open ? 'is-open' : ''}`}>
+                                <button 
+                                  className="mission-header-btn"
+                                  aria-expanded={open}
+                                  onClick={() => toggleMission(m.id)}
+                                >
+                                  <span className="m-name">{m.mission}</span>
+                                  <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                  <span className="m-caret">{open ? '−' : '+'}</span>
+                                </button>
+                                
+                                {open && (
+                                  <ul className="source-links">
+                                    {m.sources.map((s, idx) => (
+                                      <li key={s.href + idx} className="source-link-row">
+                                        <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
+                                          <span className="src-title">{s.t}</span>
+                                          <span className="src-host">{getHostname(s.href)} ↗</span>
+                                        </a>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
