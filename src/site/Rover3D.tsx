@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {createStage} from './teardown/stage3d.js';
 
 // Stage adapted from elvarofficial/teardown (MIT). NASA/Ames model, not invented geometry.
@@ -13,11 +14,12 @@ export default function Rover3D(){
  try{
  const st=createStage(canvas.current!,{viewport:()=>({top:0,bottom:0})},{bg:'#111110',bloom:{strength:0,radius:0,threshold:1},exposure:1.1,pr:Math.min(devicePixelRatio,1.5)});
  const {scene,camera,renderer}=st;
- scene.add(new THREE.HemisphereLight(0xe8e1d5,0x55554d,3));const key=new THREE.DirectionalLight(0xffffff,4);key.position.set(4,6,5);scene.add(key);const fill=new THREE.DirectionalLight(0xdad6cd,2);fill.position.set(-5,3,-3);scene.add(fill);
+ const pmrem=new THREE.PMREMGenerator(renderer);scene.environment=pmrem.fromScene(new RoomEnvironment(),.04).texture;scene.environmentIntensity=.5;pmrem.dispose();
+ scene.add(new THREE.HemisphereLight(0xe8e1d5,0x55554d,.6));const key=new THREE.DirectionalLight(0xfff2dd,2.6);key.position.set(4,6,5);scene.add(key);const fill=new THREE.DirectionalLight(0xdad6cd,.7);fill.position.set(-5,3,-3);scene.add(fill);const rim=new THREE.DirectionalLight(0xffffff,1.1);rim.position.set(-2,5,-6);scene.add(rim);
  const controls=new OrbitControls(camera,canvas.current!);controls.enableDamping=false;controls.enablePan=false;controls.minDistance=2;controls.maxDistance=12;controls.maxPolarAngle=Math.PI*.94;
  let model:THREE.Group|undefined;const render=()=>{if(alive)st.render()};const resize=()=>{st.resize();render()};controls.addEventListener('change',render);
  const draco=new DRACOLoader();draco.setDecoderPath('/draco/');const loader=new GLTFLoader();loader.setDRACOLoader(draco);
- loader.load('/models/opportunity.glb',g=>{if(!alive)return;model=g.scene;const box=new THREE.Box3().setFromObject(model);const center=box.getCenter(new THREE.Vector3());const size=box.getSize(new THREE.Vector3());model.position.sub(center);model.traverse((o:any)=>{if(o.isMesh)for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m.color){const c=m.color;const v=.2126*c.r+.7152*c.g+.0722*c.b;c.setRGB(v,v*.98,v*.93)}m.roughness=Math.max(m.roughness||0,.55)}});const group=new THREE.Group();group.add(model);group.scale.setScalar(3.2/Math.max(size.x,size.y,size.z));scene.add(group);
+ loader.load('/models/opportunity.glb',g=>{if(!alive)return;model=g.scene;const box=new THREE.Box3().setFromObject(model);const center=box.getCenter(new THREE.Vector3());const size=box.getSize(new THREE.Vector3());model.position.sub(center);model.traverse((o:any)=>{if(o.isMesh)for(const m of Array.isArray(o.material)?o.material:[o.material]){m.roughness=Math.max(m.roughness||0,.5);if(m.name==='Gold2'||m.name==='Copper'){m.metalness=.85;m.roughness=.32}}});const group=new THREE.Group();group.add(model);group.scale.setScalar(3.2/Math.max(size.x,size.y,size.z));scene.add(group);
  const view=(kind='three-quarter')=>{camera.position.set(...(kind==='front'?[0,1,5]:kind==='side'?[5,1,0]:kind==='top'?[0,5,.01]:[4,2.6,4]) as [number,number,number]);controls.target.set(0,0,0);controls.update();render()};
  actions.current={view,wire:(v:boolean)=>{model!.traverse((o:any)=>{if(o.isMesh){for(const m of Array.isArray(o.material)?o.material:[o.material])m.wireframe=v}});render()},zoom:(factor:number)=>{camera.position.multiplyScalar(factor);controls.update();render()}};
  view();if(alive){setStatus('NASA model ready. Drag to orbit.');setReady(true)}
