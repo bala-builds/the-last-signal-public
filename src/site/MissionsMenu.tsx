@@ -34,7 +34,7 @@ export default function MissionsMenu() {
 
   return <div className="missions-menu" ref={rootRef}>
     <button ref={toggleRef} className="missions-toggle" aria-expanded={open} aria-haspopup="true" aria-controls="missions-panel" onClick={() => setOpen(!open)}>MISSIONS ⌄</button>
-    {open && <div className="mega" id="missions-panel" role="dialog" aria-label="Mission navigation">
+    {open && <div className="mega" id="missions-panel" role="dialog" aria-label="Mission navigation" data-lenis-prevent>
       <div className="mega-search">
         <label>FIND A MISSION
           <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={`SEARCH ${MISSIONS.length} MISSIONS...`} autoFocus />

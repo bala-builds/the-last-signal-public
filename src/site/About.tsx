@@ -4,6 +4,7 @@ import { Frame } from './Site';
 import { records, type RecordInfo } from './archive';
 import { activeRecords } from './films';
 import { storyCatalog, modelIds } from './films';
+import { scrollToAnchor } from './motion';
 import './about.css';
 
 // 3 Destination Groups for Section 05: Lunar, Mars, Deep Space
@@ -166,10 +167,7 @@ export default function About() {
 
   const scrollTo = (id: string) => {
     setActiveSection(id);
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    scrollToAnchor(id, -90);
   };
 
   return (
