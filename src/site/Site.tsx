@@ -9,8 +9,9 @@ import VisualStory from './VisualStory';
 import EquipmentExplorer from './EquipmentExplorer';
 import {films,archiveArt,storyCatalog,modelIds,activeIds,activeRecords}from './films';
 import MissionsMenu from './MissionsMenu';
+import { initGlobalLenis, destroyGlobalLenis, getLenis, getMotionTier, setupRevealObserver, scrollToAnchor } from './motion';
 const Rover3D=lazy(()=>import('./Rover3D'));
-function ModelExplorer(){const [open,setOpen]=useState(false);return <section className="model-explorer"><p className="eyebrow">INTERACTIVE 3D / OPPORTUNITY</p><h2>INSPECT THE ROVER</h2><p className="lede">An authentic NASA exterior model, in a Teardown-based viewer.</p>{open?<Suspense fallback={<p role="status">Loading 3D viewer...</p>}><Rover3D/></Suspense>:<div className="model-poster"><img src={photoFor('opportunity').img} alt={photoFor('opportunity').alt}/><button className="cta" onClick={()=>setOpen(true)}>LOAD INTERACTIVE 3D ⟶</button></div>}<p className="muted">Loaded only when you ask. No auto-orbit or audio. Surveyor and Apollo do not yet have verified 3D models in this edition.</p></section>}
+function ModelExplorer(){const [open,setOpen]=useState(false);return <section className="model-explorer"><p className="eyebrow">INTERACTIVE 3D / OPPORTUNITY</p><h2>INSPECT THE ROVER</h2><p className="lede">An authentic NASA exterior model, in a Teardown-based viewer.</p>{open?<Suspense fallback={<p role="status">Loading 3D viewer...</p>}><div data-lenis-prevent><Rover3D/></div></Suspense>:<div className="model-poster"><img src={photoFor('opportunity').img} alt={photoFor('opportunity').alt}/><button className="cta" onClick={()=>setOpen(true)}>LOAD INTERACTIVE 3D ⟶</button></div>}<p className="muted">Loaded only when you ask. No auto-orbit or audio. Surveyor and Apollo do not yet have verified 3D models in this edition.</p></section>}
 const SEQ:Seq={id:'surveyor-3',label:'Surveyor 3 photo-guided illustrative animation, exterior to imagined cutaway',parts:s3Parts,count:s3Count,w:400,h:712};
 const cx=(id:string)=>chapters.find(c=>c.id===id)!;
 const entry=(id:string)=>`/${id}`;
@@ -19,7 +20,84 @@ function ScrollMotion({root}:{root:React.RefObject<HTMLDivElement>}){const loc=u
 export function Wave({active=true,variant=0}:{active?:boolean;variant?:number}){return <svg className={`wave ${active?'active':''}`} viewBox="0 0 360 55" role="img" aria-label={active?'Illustrative animated waveform, not mission data':'Illustrative inactive signal line'}><path d={active?['M0 28H70l8-4 7 8 6-12 8 18 8-31 8 43 8-34 9 22 8-10 8 6 10-9 8 5H360','M0 28H80l6-3 5 7 7-14 7 22 8-35 9 44 9-31 8 20 9-13 8 6H360','M0 28H65l9-7 9 15 10-22 10 28 10-39 11 49 10-37 10 22 10-15 11 6H360'][variant%3]:'M0 28H360'}/></svg>}
 function Sources({r}:{r?:RecordInfo}){const ss=r?r.sources:records.flatMap(r=>r.sources);return <div className="source-list"><h3>Research and references</h3><ul>{ss.map(s=><li key={s.href}><a href={s.href} target="_blank" rel="noreferrer">{s.t} ↗</a></li>)}</ul></div>}
 function Foot(){return <footer className="foot wrap"><div className="foot-grid"><Link className="brand" to="/">((•)) THE LAST SIGNAL</Link><div><Link to="/about">About the project</Link><Link to="/still-exploring">Still Exploring</Link><Link to="/machines">Mission directory</Link><Link to="/missions/archive">Mission archive</Link><Link to="/archive">Reference library</Link><Link to="/references">Research and credits</Link></div><p>Historical photographs: NASA and NASA/JPL-Caltech, credited beside each image. Illustrative media is labeled. Independent educational project. Not an official NASA product or NASA-endorsed.</p></div><div className="foot-bottom"><span>TRANSMISSION ARCHIVE / {String(records.length).padStart(2,'0')} RECORDS</span><span>● DOCUMENTED HISTORY, RECREATED INTERFACE</span></div></footer>}
-export function Frame({children,home=false}:{children:(root:React.RefObject<HTMLDivElement>)=>React.ReactNode;home?:boolean}){const root=useRef<HTMLDivElement>(null);const loc=useLocation();const [menu,setMenu]=useState(false);const reduce=useReduced();const [loading,setLoading]=useState(()=>!reduce&&!sessionStorage.getItem('signal-entered'));const [progress,setProgress]=useState(0);useEffect(()=>{if(!loading)return;const t=setTimeout(()=>{setLoading(false);sessionStorage.setItem('signal-entered','1')},550);return()=>clearTimeout(t)},[loading]);useEffect(()=>{setMenu(false);root.current?.scrollTo(0,0);const f=(e:KeyboardEvent)=>{if(e.key==='Escape'){setMenu(false)}};document.addEventListener('keydown',f);if(loc.hash)requestAnimationFrame(()=>document.getElementById(loc.hash.slice(1))?.scrollIntoView());return()=>document.removeEventListener('keydown',f)},[loc.pathname,loc.hash]);useEffect(()=>{const rt=root.current;if(!rt)return;const els=Array.from(rt.querySelectorAll('[data-reveal]'));if(reduce){els.forEach(e=>e.classList.add('in'));return}const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{root:rt,threshold:.05});els.forEach(e=>io.observe(e));return()=>io.disconnect()},[loc.pathname,reduce]);return <div className={`ls ${home?'home':''}`} ref={root} onScroll={()=>{const r=root.current;if(r)setProgress(r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight))}}><a className="skip" href="#main">Skip to content</a><div className="progress" style={{transform:`scaleX(${progress})`}}/><nav className="top"><Link className="brand" to="/"><span aria-hidden="true">((•))</span> THE LAST SIGNAL</Link><button className="menu-toggle" aria-expanded={menu} aria-controls="navigation" onClick={()=>setMenu(!menu)}>{menu?'CLOSE −':'MENU +'}</button><div id="navigation" className={`nav-links ${menu?'open':''}`}><MissionsMenu/><Link to="/equipment">EQUIPMENT</Link><Link to="/stories">STORIES</Link><Link to="/archive">ARCHIVE</Link><Link to="/about">ABOUT</Link><Link className="outline" to="/signal">EXPLORE ↗</Link></div></nav>{loading&&<div className="loader" aria-live="polite"><span>THE LAST SIGNAL</span><Wave/><small>SIGNAL ACQUISITION...</small></div>}<ScrollMotion key={loc.pathname} root={root}/><main id="main">{children(root)}</main>{!home&&<Foot/>}</div>}
+export function Frame({children,home=false}:{children:(root:React.RefObject<HTMLDivElement>)=>React.ReactNode;home?:boolean}){
+  const root=useRef<HTMLDivElement>(null);
+  const loc=useLocation();
+  const [menu,setMenu]=useState(false);
+  const reduce=useReduced();
+  const [loading,setLoading]=useState(()=>!reduce&&!sessionStorage.getItem('signal-entered'));
+  const [progress,setProgress]=useState(0);
+  const motionTier = getMotionTier(loc.pathname);
+
+  useEffect(()=>{
+    if(!root.current)return;
+    initGlobalLenis(root.current, { tier: motionTier });
+    return ()=>{
+      destroyGlobalLenis();
+    };
+  },[loc.pathname, motionTier]);
+
+  useEffect(()=>{
+    if(!loading)return;
+    const t=setTimeout(()=>{setLoading(false);sessionStorage.setItem('signal-entered','1')},550);
+    return()=>clearTimeout(t);
+  },[loading]);
+
+  useEffect(()=>{
+    setMenu(false);
+    if(loc.hash){
+      requestAnimationFrame(()=>scrollToAnchor(loc.hash, -90));
+    } else {
+      const lenis = getLenis();
+      if(lenis){
+        lenis.scrollTo(0, { immediate: true });
+      } else {
+        root.current?.scrollTo(0, 0);
+      }
+    }
+    const f=(e:KeyboardEvent)=>{if(e.key==='Escape'){setMenu(false)}};
+    document.addEventListener('keydown',f);
+    return()=>document.removeEventListener('keydown',f);
+  },[loc.pathname, loc.hash]);
+
+  useEffect(()=>{
+    const rt=root.current;
+    if(!rt)return;
+    return setupRevealObserver(rt, reduce);
+  },[loc.pathname, reduce]);
+
+  return (
+    <div 
+      className={`ls ${home?'home':''}`} 
+      ref={root} 
+      data-motion-tier={motionTier}
+      onScroll={()=>{
+        const r=root.current;
+        if(r)setProgress(r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight));
+      }}
+    >
+      <div className="film-grain" aria-hidden="true" />
+      <a className="skip" href="#main">Skip to content</a>
+      <div className="progress" style={{transform:`scaleX(${progress})`}}/>
+      <nav className="top">
+        <Link className="brand" to="/"><span aria-hidden="true">((•))</span> THE LAST SIGNAL</Link>
+        <button className="menu-toggle" aria-expanded={menu} aria-controls="navigation" onClick={()=>setMenu(!menu)}>{menu?'CLOSE −':'MENU +'}</button>
+        <div id="navigation" className={`nav-links ${menu?'open':''}`} data-lenis-prevent>
+          <MissionsMenu/>
+          <Link to="/equipment" className={loc.pathname.startsWith('/equipment')?'active':''}>EQUIPMENT</Link>
+          <Link to="/stories" className={loc.pathname.startsWith('/stories')?'active':''}>STORIES</Link>
+          <Link to="/archive" className={loc.pathname.startsWith('/archive')?'active':''}>ARCHIVE</Link>
+          <Link to="/about" className={loc.pathname.startsWith('/about')?'active':''}>ABOUT</Link>
+          <Link className="outline" to="/signal">EXPLORE ↗</Link>
+        </div>
+      </nav>
+      {loading&&<div className="loader" aria-live="polite"><span>THE LAST SIGNAL</span><Wave/><small>SIGNAL ACQUISITION...</small></div>}
+      <ScrollMotion key={loc.pathname} root={root}/>
+      <main id="main">{children(root)}</main>
+      {!home&&<Foot/>}
+    </div>
+  );
+}
 export function Site(){const p=photoFor('surveyor-3');return <Frame home>{()=> <header className="hero"><div className="hero-photo"><img src={p.img} alt={p.alt}/></div><div className="hero-content wrap"><p className="eyebrow" data-reveal>AN INTERACTIVE ARCHIVE<br/>OF NASA'S DISTANT EXPLORERS</p><div className="short-rule"/><h1 data-reveal><span>THE</span><span>LAST SIGNAL</span></h1><p className="tagline" data-reveal>Abandoned but not forgotten.</p><p className="hero-desc" data-reveal>Every machine had a mission.<br/>Every mission left a story.</p><Link className="cta" to="/machines">BEGIN THE STORY <span>⟶</span></Link></div><div className="hero-credit"><b>SURVEYOR 3 / THE MOON</b><span>{p.credit}</span><span>Archival photograph, not a composite scene</span></div><div className="hero-stats wrap"><div><em>{String(records.length+activeRecords.length).padStart(2,'0')}</em><span>DOCUMENTED MACHINES</span></div><div><em>{String(new Set(storyCatalog.map(c=>c.world)).size).padStart(2,'0')}</em><span>DESTINATIONS EXPLORED</span></div><Wave/><Link to="/about">ABOUT THE ARCHIVE ↗</Link></div></header>}</Frame>}
 function Cards(){return <div className="mission-directory">{storyCatalog.filter(c=>!activeIds.includes(c.id)).map(c=><Link key={c.id} to={entry(c.id)}><span>{c.no} / {c.world.toUpperCase()}</span><h2>{c.name}</h2><small>{c.years}</small><b>VIEW STORY ↗</b></Link>)}</div>}
 export function Machines(){return <Frame>{()=> <section className="wrap page-section"><p className="eyebrow">MISSION DIRECTORY</p><h1>CHOOSE YOUR<br/>EXPLORER.</h1><Cards/><Link className="ongoing-link" to="/still-exploring"><span>STILL EXPLORING / ACTIVE MISSIONS</span><h2>Some signals keep coming.</h2><p>Meet the machines whose stories are still being written. ↗</p></Link><div className="directory-ways"><Link to="/equipment"><b>TOUCH THE HARDWARE</b><span>{modelIds.length} inspectable 3D studies ↗</span></Link><Link to="/archive"><b>FOLLOW THE EVIDENCE</b><span>The reference library ↗</span></Link></div></section>}</Frame>}

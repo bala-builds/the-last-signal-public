@@ -64,15 +64,16 @@
 }
 
 .subnav-btn:hover {
-  color: var(--ink);
-  border-color: var(--line);
-  background: rgba(255, 255, 255, 0.03);
+  color: var(--amber);
+  border-color: rgba(197, 138, 80, 0.4);
+  background: var(--amber-subtle);
 }
 
 .subnav-btn.active {
-  color: var(--ink);
-  border-color: rgba(200, 197, 190, 0.5);
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--cream);
+  border-color: var(--amber);
+  background: var(--amber-subtle);
+  box-shadow: 0 0 12px rgba(197, 138, 80, 0.15);
 }
 
 /* --------------------------------------------------------------------------
@@ -147,8 +148,8 @@
   font-size: 28px;
   font-weight: 400;
   line-height: 1;
-  color: var(--muted);
-  opacity: 0.5;
+  color: var(--amber);
+  opacity: 0.75;
 }
 
 .section-tag {
@@ -560,7 +561,7 @@
 .dest-idx {
   font-family: var(--mono), monospace;
   font-size: 16px;
-  color: var(--dim);
+  color: var(--amber);
   font-weight: 500;
   border-right: 1px solid var(--line);
   padding-right: 18px;

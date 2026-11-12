@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import EquipmentCollection from './EquipmentCollection';
 import { records } from './archive';
 import { activeRecords, activeIds, modelIds } from './films';
+import { scrollToAnchor } from './motion';
 
 // Equipment page restructure (release 44): three destination rows expand into a machine
 // list; selecting a machine mounts its existing 3D studio (the release-42 viewer is
@@ -60,10 +61,8 @@ export default function EquipmentExplorer({ root }: { root: React.RefObject<HTML
   useEffect(() => {
     if (!sel || !openDest) return;
     const t = window.setTimeout(() => {
-      const el = document.getElementById(sel);
-      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      el?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-    }, 80);
+      scrollToAnchor(sel, -80);
+    }, 90);
     return () => window.clearTimeout(t);
   }, [sel, openDest]);
 
