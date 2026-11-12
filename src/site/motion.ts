@@ -139,16 +139,66 @@ export function scrollToAnchor(target: string | HTMLElement, offset = -140) {
 }
 
 export function setupRevealObserver(root: HTMLElement, isReduced: boolean): () => void {
-  const elements = Array.from(root.querySelectorAll<HTMLElement>('[data-reveal]'));
+  const selectors = [
+    '[data-reveal]',
+    '.scroll-layer',
+    '.archive-card',
+    '.mission-card',
+    '.story-book',
+    '.active-record',
+    '.editorial > figure',
+    '.editorial > div',
+    '.stat',
+    '.chal',
+    '.source-list',
+    '.callout',
+    '.directory-ways > a',
+    '.ongoing-link',
+    '.model-explorer',
+  ].join(', ');
+
+  const elements = Array.from(root.querySelectorAll<HTMLElement>(selectors));
+  if (!elements.length) return () => {};
+
   if (isReduced) {
-    elements.forEach(el => el.classList.add('in'));
+    elements.forEach(el => {
+      el.classList.add('in', 'arrived');
+    });
     return () => {};
   }
+
+  // Calculate subtle stagger delay across sibling items in the same container or grid
+  elements.forEach((el, idx) => {
+    el.classList.add('reveal-item');
+    const parent = el.parentElement;
+    let localIndex = idx;
+    if (parent) {
+      const siblings = Array.from(parent.children);
+      const pos = siblings.indexOf(el);
+      if (pos >= 0) localIndex = pos;
+    }
+    const stagger = Math.min(localIndex % 4, 3) * 90;
+    el.style.setProperty('--reveal-delay', `${stagger}ms`);
+  });
+
+  const rootRect = root.getBoundingClientRect();
+  const viewportBottom = rootRect.top + root.clientHeight;
+
+  // Immediately reveal elements that are already within or above the viewport on initial mount
+  elements.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < viewportBottom - 20) {
+      el.classList.add('in', 'arrived');
+    }
+  });
+
+  const remaining = elements.filter(el => !el.classList.contains('arrived'));
+  if (!remaining.length) return () => {};
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('in');
+        entry.target.classList.add('in', 'arrived');
         io.unobserve(entry.target);
       }
     });
@@ -158,6 +208,6 @@ export function setupRevealObserver(root: HTMLElement, isReduced: boolean): () =
     rootMargin: '0px 0px -40px 0px',
   });
 
-  elements.forEach(el => io.observe(el));
+  remaining.forEach(el => io.observe(el));
   return () => io.disconnect();
 }

@@ -73,9 +73,9 @@ export default function EquipmentExplorer({ root }: { root: React.RefObject<HTML
   };
 
   return <div className="eq-acc">
-    {DESTS.map((d) => {
+    {DESTS.map((d, dIdx) => {
       const open = openDest === d.id;
-      return <section className={`eq-dest${open ? ' open' : ''}`} key={d.id}>
+      return <section className={`eq-dest${open ? ' open' : ''}`} key={d.id} style={{ '--dest-index': dIdx } as React.CSSProperties}>
         <button className="eq-row" aria-expanded={open} aria-controls={`eq-panel-${d.id}`} onClick={() => toggleDest(d.id)}>
           <span className="eq-art" style={{ backgroundImage: `url(${d.img})` }} aria-hidden="true" />
           <span className="eq-no">{d.no}</span>
@@ -93,7 +93,7 @@ export default function EquipmentExplorer({ root }: { root: React.RefObject<HTML
                 const r = recordById.get(id)!;
                 const active = activeIds.includes(id);
                 const meta = `${active ? 'ACTIVE / STILL EXPLORING' : `${('type' in r ? r.type : '').toUpperCase()} / ${('category' in r ? r.category : '').toUpperCase()}`} · LAUNCHED ${r.launch.toUpperCase()}`;
-                return <li key={id}>
+                return <li key={id} style={{ '--m-idx': i } as React.CSSProperties}>
                   <button className={`eq-machine${sel === id ? ' sel' : ''}`} aria-pressed={sel === id} aria-controls={sel === id ? `eq-studio-${id}` : undefined} onClick={() => setSel(id)}>
                     <span className="eq-idx">{String(i + 1).padStart(2, '0')}</span>
                     <span className="eq-mname">{r.mission}</span>
