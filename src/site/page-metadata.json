@@ -41,6 +41,12 @@
     "canonical": "https://the-last-signal-lime.vercel.app/missions",
     "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
   },
+  "/missions/archive": {
+    "title": "Mission Archive | THE LAST SIGNAL",
+    "description": "Search and filter every documented mission by destination and verified status, then open its visual story, 3D model or NASA record.",
+    "canonical": "https://the-last-signal-lime.vercel.app/missions/archive",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
   "/signal": {
     "title": "The Final Signal | THE LAST SIGNAL",
     "description": "Follow documented mission endings through manual timelines. No invented final words or transmission recordings.",
@@ -285,6 +291,24 @@
     "title": "IM-2 Athena | THE LAST SIGNAL",
     "description": "IM-2 Athena: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
     "canonical": "https://the-last-signal-lime.vercel.app/im-2-athena",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/im-1-odysseus": {
+    "title": "IM-1 Odysseus | THE LAST SIGNAL",
+    "description": "IM-1 Odysseus: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/im-1-odysseus",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/blue-ghost-1": {
+    "title": "Blue Ghost Mission 1 | THE LAST SIGNAL",
+    "description": "Blue Ghost Mission 1: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/blue-ghost-1",
+    "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
+  },
+  "/lunar-trailblazer": {
+    "title": "Lunar Trailblazer | THE LAST SIGNAL",
+    "description": "Lunar Trailblazer: a NASA-grounded visual journey with distinct documentary images, short narration and links to original evidence.",
+    "canonical": "https://the-last-signal-lime.vercel.app/lunar-trailblazer",
     "image": "https://the-last-signal-lime.vercel.app/social-preview.png"
   }
 }
