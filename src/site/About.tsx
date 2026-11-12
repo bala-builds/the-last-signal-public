@@ -170,6 +170,30 @@ export default function About() {
     scrollToAnchor(id, -90);
   };
 
+  // ScrollSpy: Automatically highlight active directory stop as user scrolls
+  React.useEffect(() => {
+    const sectionIds = ['section-01', 'section-02', 'section-03', 'section-04', 'section-05', 'section-06'];
+    const elements = sectionIds
+      .map(id => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter(e => e.isIntersecting);
+      if (visible.length > 0) {
+        visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        setActiveSection(visible[0].target.id);
+      }
+    }, {
+      rootMargin: '-15% 0px -60% 0px',
+      threshold: [0, 0.2, 0.5]
+    });
+
+    elements.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <Frame>
       {() => (
@@ -498,7 +522,7 @@ export default function About() {
                     {searchQuery && ' MATCHED'}
                   </span>
                   <span className="ref-hover-cue">
-                    {searchQuery ? 'SEARCH RESULTS EXPANDED' : 'HOVER SECTION ⟶ HOVER MISSION TO REVEAL LINKS'}
+                    {searchQuery ? 'SEARCH RESULTS EXPANDED' : 'HOVER OR TAP TO REVEAL LINKS'}
                   </span>
                 </div>
               </div>
@@ -545,7 +569,7 @@ export default function About() {
                               {sec.missions.length} MISSIONS · {sourceCount} SOURCES
                             </span>
                             <span className="dest-status-label" aria-hidden="true">
-                              {sectionOpen ? 'EXPANDED −' : 'HOVER TO EXPAND +'}
+                              {sectionOpen ? 'EXPANDED −' : 'EXPAND +'}
                             </span>
                           </div>
                         </div>
