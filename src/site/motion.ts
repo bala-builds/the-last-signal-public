@@ -96,21 +96,45 @@ export function destroyGlobalLenis() {
   }
 }
 
-export function scrollToAnchor(target: string | HTMLElement, offset = -90) {
-  const isReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+export function scrollToAnchor(target: string | HTMLElement, offset = -140) {
+  if (typeof window === 'undefined' || !target) return;
+  const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const lenis = getLenis();
 
+  const el = typeof target === 'string'
+    ? document.querySelector<HTMLElement>(target.startsWith('#') ? target : `#${target}`)
+    : target;
+
+  if (!el) {
+    console.warn('scrollToAnchor: target element not found:', target);
+    return;
+  }
+
   if (lenis && !isReduced) {
-    lenis.scrollTo(target, {
-      offset,
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    try {
+      lenis.scrollTo(el, {
+        offset,
+        duration: 0.95,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+      return;
+    } catch (err) {
+      console.warn('Lenis scrollTo failed, using fallback:', err);
+    }
+  }
+
+  // Fallback: direct container scroll or scrollIntoView
+  const container = el.closest<HTMLElement>('.ls');
+  if (container) {
+    const elRect = el.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const targetScrollTop = container.scrollTop + (elRect.top - containerRect.top) + offset;
+    container.scrollTo({
+      top: Math.max(0, targetScrollTop),
+      behavior: isReduced ? 'auto' : 'smooth'
     });
   } else {
-    const el = typeof target === 'string' 
-      ? document.querySelector(target.startsWith('#') ? target : `#${target}`)
-      : target;
-    el?.scrollIntoView({ behavior: isReduced ? 'auto' : 'smooth' });
+    el.scrollIntoView({ behavior: isReduced ? 'auto' : 'smooth', block: 'start' });
   }
 }
 
