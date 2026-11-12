@@ -4,6 +4,14 @@ Clean standalone contribution source for an independent educational NASA-storyte
 
 ## Included
 
+Updated November 12, 2026 with the published Missions and Equipment design:
+
+- Searchable Missions menu grouped by Moon, Mars, Deep Space and Still Exploring.
+- `/missions/archive` lists all 41 missions with search, destination and status filters.
+- Equipment opens destination groups, then the selected machine's existing 3D explorer.
+- Current 3D part labels and viewer controls are preserved.
+
+
 - 41 picture-book mission stories, each with eight to twelve distinct scenes.
 - 33 completed or lost mission records in Archive and Final Signal.
 - Eight ongoing missions kept separately in Still Exploring.
