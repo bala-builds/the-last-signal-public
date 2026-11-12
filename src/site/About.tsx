@@ -167,8 +167,33 @@ export default function About() {
 
   const scrollTo = (id: string) => {
     setActiveSection(id);
-    scrollToAnchor(id, -90);
+    try {
+      window.history.replaceState(null, '', `#${id}`);
+    } catch {}
+    scrollToAnchor(id, -140);
   };
+
+  // Support initial hash deep linking (e.g. /about#methodology or /about#section-03)
+  React.useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const aliasMap: Record<string, string> = {
+        'project': 'section-01',
+        'imagery': 'section-02',
+        'methodology': 'section-03',
+        'method': 'section-03',
+        'accessibility': 'section-04',
+        'references': 'section-05',
+        'sources': 'section-05',
+        'credits': 'section-06',
+      };
+      const targetId = aliasMap[hash] || hash;
+      setActiveSection(targetId);
+      setTimeout(() => {
+        scrollToAnchor(targetId, -140);
+      }, 150);
+    }
+  }, []);
 
   // ScrollSpy: Automatically highlight active directory stop as user scrolls
   React.useEffect(() => {

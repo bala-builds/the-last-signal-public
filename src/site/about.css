@@ -129,11 +129,12 @@
   padding: 70px 0;
   border-bottom: 1px solid var(--line);
   position: relative;
+  scroll-margin-top: 140px;
 }
 
 .anchor-target {
   position: absolute;
-  top: -120px;
+  top: -140px;
 }
 
 .section-meta {
