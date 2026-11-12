@@ -1,10 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { Frame, Wave } from './Site';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Frame } from './Site';
 import { records, type RecordInfo } from './archive';
-import { activeRecords, storyCatalog, modelIds } from './films';
+import { activeRecords } from './films';
+import { storyCatalog, modelIds } from './films';
 import './about.css';
 
-// 4 Mission categories for Primary Evidence Library (Section 05)
+// Mission categorization for primary evidence library (Section 05)
 const LUNAR_IDS = [
   'surveyor-3', 'apollo-17-lrv', 'ranger-7', 'surveyor-1',
   'apollo-11-surface', 'apollo-12-surface', 'apollo-14-surface',
@@ -52,12 +54,14 @@ export default function About() {
     'deep-space': true,
   });
   const [expandedMissions, setExpandedMissions] = useState<Record<string, boolean>>({});
+  const [activeSection, setActiveSection] = useState('project');
 
   // Compile all mission sources from archive records and active records
   const allMissionGroups: MissionSourceGroup[] = useMemo(() => {
     const list: MissionSourceGroup[] = [];
     const recordMap = new Map<string, RecordInfo>(records.map(r => [r.id, r]));
 
+    // Helper to resolve sources
     const addMission = (id: string, cat: 'lunar' | 'commercial' | 'mars' | 'deep-space', catLabel: string) => {
       const rec = recordMap.get(id);
       const active = activeRecords.find(a => a.id === id);
@@ -68,7 +72,7 @@ export default function About() {
       if (rec && rec.sources && rec.sources.length > 0) {
         sources = [...rec.sources];
       } else if (active && active.source) {
-        sources = [{ t: `${active.mission} — NASA Mission Overview`, href: active.source }];
+        sources = [{ t: `${active.mission} — Official NASA Mission Archive`, href: active.source }];
       }
 
       if (sources.length > 0) {
@@ -120,11 +124,6 @@ export default function About() {
     return filteredMissions.reduce((acc, m) => acc + m.sources.length, 0);
   }, [filteredMissions]);
 
-  const isMissionOpen = (id: string) => {
-    if (searchQuery.trim().length > 0) return true;
-    return !!expandedMissions[id];
-  };
-
   const toggleGroup = (cat: string) => {
     setExpandedGroups(prev => ({ ...prev, [cat]: !prev[cat] }));
   };
@@ -147,6 +146,7 @@ export default function About() {
   };
 
   const scrollTo = (id: string) => {
+    setActiveSection(id);
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -166,466 +166,544 @@ export default function About() {
   return (
     <Frame>
       {() => (
-        <section className="wrap page-section about-redesign">
-          {/* Minimalist Section Navigation Strip */}
-          <nav className="about-dir-nav" aria-label="About section jump links">
-            <span className="dir-label">SECTION DIRECTORY /</span>
-            <button onClick={() => scrollTo('sec-01')}>01 THE PROJECT</button>
-            <span className="dir-dot">·</span>
-            <button onClick={() => scrollTo('sec-02')}>02 IMAGERY & MOTION</button>
-            <span className="dir-dot">·</span>
-            <button onClick={() => scrollTo('sec-03')}>03 METHODOLOGY</button>
-            <span className="dir-dot">·</span>
-            <button onClick={() => scrollTo('sec-04')}>04 ACCESSIBILITY</button>
-            <span className="dir-dot">·</span>
-            <button onClick={() => scrollTo('sec-05')}>05 REFERENCES</button>
-            <span className="dir-dot">·</span>
-            <button onClick={() => scrollTo('sec-06')}>06 CREDITS</button>
+        <article className="about-editorial-wrap">
+          {/* Sub-Navigation Bar */}
+          <nav className="about-subnav" aria-label="About page section directory">
+            <div className="about-subnav-inner">
+              <span className="subnav-label">INDEX /</span>
+              <button 
+                className={`subnav-btn ${activeSection === 'section-01' ? 'active' : ''}`}
+                onClick={() => scrollTo('section-01')}
+              >
+                01 THE PROJECT
+              </button>
+              <button 
+                className={`subnav-btn ${activeSection === 'section-02' ? 'active' : ''}`}
+                onClick={() => scrollTo('section-02')}
+              >
+                02 IMAGERY & MOTION
+              </button>
+              <button 
+                className={`subnav-btn ${activeSection === 'section-03' ? 'active' : ''}`}
+                onClick={() => scrollTo('section-03')}
+              >
+                03 METHODOLOGY
+              </button>
+              <button 
+                className={`subnav-btn ${activeSection === 'section-04' ? 'active' : ''}`}
+                onClick={() => scrollTo('section-04')}
+              >
+                04 ACCESSIBILITY
+              </button>
+              <button 
+                className={`subnav-btn ${activeSection === 'section-05' ? 'active' : ''}`}
+                onClick={() => scrollTo('section-05')}
+              >
+                05 REFERENCES
+              </button>
+              <button 
+                className={`subnav-btn ${activeSection === 'section-06' ? 'active' : ''}`}
+                onClick={() => scrollTo('section-06')}
+              >
+                06 CREDITS
+              </button>
+            </div>
           </nav>
 
-          {/* Page Hero */}
-          <header className="about-header">
-            <p className="eyebrow">ABOUT THE PROJECT</p>
-            <h1>HISTORY,<br />NOT MYTHOLOGY.</h1>
-            <p className="lede">
-              An independent interactive archive and educational storytelling site dedicated to NASA's distant explorers.
+          <header className="about-hero">
+            <p className="eyebrow" data-reveal>THE LAST SIGNAL / EDITORIAL COMPENDIUM</p>
+            <h1 data-reveal>HISTORY,<br />NOT MYTHOLOGY.</h1>
+            <p className="lede" data-reveal>
+              An independent interactive archive and educational storytelling project dedicated to 
+              NASA's distant explorers across the Moon, Mars, and deep space.
             </p>
-            <div className="about-wave" aria-hidden="true">
-              <Wave active={true} variant={0} />
-            </div>
+            <div className="hero-divider" />
           </header>
 
-          {/* 01 — THE PROJECT */}
-          <article id="sec-01" className="about-block">
-            <div className="block-meta">
-              <span className="block-num">01</span>
-              <span className="block-tag">THE PROJECT</span>
+          {/* SECTION 01 — THE PROJECT */}
+          <section id="section-01" className="about-section">
+            <div className="section-meta">
+              <span className="section-number">01</span>
+              <span className="section-tag">PROJECT FOUNDATION</span>
             </div>
-            <div className="block-body">
-              <h2>History, Not Mythology.</h2>
-              <div className="editorial-columns">
-                <div>
-                  <p>
-                    <strong>THE LAST SIGNAL</strong> is an educational storytelling archive created to document humanity’s 
-                    distant explorers with scientific, factual and historical fidelity. Space exploration is too often 
-                    reduced to soundbites or retold as romanticized myth. This archive exists to return to the original 
-                    evidence: the verified engineering records, planetary photography, mission timelines, and scientific 
-                    discoveries that define each spacecraft’s historical journey.
-                  </p>
-                  <p>
-                    Every machine had a mission; every mission left a story. Silence across deep space is not an absence 
-                    of meaning. Whether resting on lunar plains, weathered by Martian dust storms, or traveling through the 
-                    heliopause into interstellar space, each robotic and crewed explorer left an enduring legacy that altered 
-                    how humanity sees the cosmos.
-                  </p>
+            <div className="section-content">
+              <div className="title-block">
+                <h2>THE PROJECT</h2>
+                <p className="subtitle">Every machine had a mission. Every mission left a story.</p>
+              </div>
+
+              <div className="editorial-prose">
+                <p>
+                  <strong>THE LAST SIGNAL</strong> is an educational storytelling archive created to document 
+                  humanity’s interplanetary explorers with rigorous scientific and historical fidelity. Space exploration 
+                  is frequently retold through romanticized folklore or oversimplified headlines. This archive exists to return 
+                  to primary sources: the raw telemetry logs, engineering challenges, planetary photography, and verified scientific 
+                  findings that define each spacecraft’s historical journey.
+                </p>
+                <p>
+                  Silence across millions of miles is not an absence of meaning. Whether resting in a lunar crater, weathering Martian 
+                  dust storms, or continuing past the heliopause into interstellar space, each robotic and crewed explorer left an indelible 
+                  legacy that shaped how humanity understands other worlds.
+                </p>
+              </div>
+
+              <div className="stats-metric-strip">
+                <div className="metric-box">
+                  <span className="metric-val">{storyCatalog.length}</span>
+                  <span className="metric-label">MISSION STORIES</span>
+                  <span className="metric-desc">8–12 illustrated scenes each, linked directly to NASA documentation.</span>
                 </div>
-                <div>
-                  <h3>MORE THAN MACHINES</h3>
-                  <p>
-                    THE LAST SIGNAL tells <strong>{storyCatalog.length} mission stories</strong>: {storyCatalog.map(c => c.name).join(', ')}. 
-                    Each story contains 8–12 illustrated scenes grounded in primary source documentation.
-                  </p>
-                  <p>
-                    The technical archive contains <strong>{records.length} concluded mission records</strong> spanning the Moon, 
-                    Mars, and deep space, and <strong>{modelIds.length} inspectable 3D models</strong> in an authentic Three.js exterior study viewer. 
-                    <strong>{activeRecords.length} active-mission records</strong> are maintained separately in <em>Still Exploring</em>, 
-                    distinguishing ongoing journeys from concluded history.
-                  </p>
-                  <p className="editorial-note">
-                    Empty filters in the archive are presented honestly, rather than filled with unverified speculation.
-                  </p>
+                <div className="metric-box">
+                  <span className="metric-val">{records.length}</span>
+                  <span className="metric-label">ARCHIVE RECORDS</span>
+                  <span className="metric-desc">Documented hardware dossiers, timelines, specifications, and legacies.</span>
+                </div>
+                <div className="metric-box">
+                  <span className="metric-val">{activeRecords.length}</span>
+                  <span className="metric-label">ACTIVE EXPLORERS</span>
+                  <span className="metric-desc">Still Exploring collection: ongoing missions with verified dated status.</span>
+                </div>
+                <div className="metric-box">
+                  <span className="metric-val">{modelIds.length}</span>
+                  <span className="metric-label">3D HARDWARE STUDIES</span>
+                  <span className="metric-desc">Interactive Three.js exterior models preserving part callouts and scale.</span>
                 </div>
               </div>
-            </div>
-          </article>
 
-          {/* 02 — IMAGERY & MOTION */}
-          <article id="sec-02" className="about-block">
-            <div className="block-meta">
-              <span className="block-num">02</span>
-              <span className="block-tag">IMAGERY & MOTION</span>
+              <div className="editorial-callout">
+                <p>
+                  <strong>More Than Machines:</strong> Active explorers belong in <em>Still Exploring</em>, strictly separate from concluded missions. 
+                  Their stories have no invented endings. Filters that return empty results are displayed honestly rather than padded with unverified speculation.
+                </p>
+              </div>
             </div>
-            <div className="block-body">
-              <h2>Evidence and Illustrative Art</h2>
-              <div className="editorial-columns">
-                <div>
-                  <h3>HISTORICAL NASA PHOTOGRAPHS</h3>
+          </section>
+
+          {/* SECTION 02 — IMAGERY & MOTION */}
+          <section id="section-02" className="about-section">
+            <div className="section-meta">
+              <span className="section-number">02</span>
+              <span className="section-tag">VISUAL INTEGRITY</span>
+            </div>
+            <div className="section-content">
+              <div className="title-block">
+                <h2>IMAGERY & MOTION</h2>
+                <p className="subtitle">Clear distinctions between primary scientific evidence and educational art.</p>
+              </div>
+
+              <div className="grid-two-col">
+                <div className="archival-card">
+                  <span className="card-badge">PRIMARY RECORDS</span>
+                  <h3>Historical NASA Photographs</h3>
                   <p>
-                    Archival mission photographs are credited directly in place with original NASA, NASA/JPL-Caltech, and 
-                    partner catalog identifiers (including Apollo Hasselblad frames <code>AS12-48-7121</code> and <code>AS17-145-22162</code>, 
-                    and Planetary Image Archive records like <code>PIA06739</code>). Contrast, grain, and authentic exposure 
-                    are preserved to respect the historical photographic record.
+                    Archival mission photographs are preserved and credited beside each scene with their original catalog identifiers 
+                    (e.g., NASA Hasselblad frames <code>AS12-48-7121</code> and <code>AS17-145-22162</code>, or JPL Planetary Image 
+                    Archive records like <code>PIA06739</code>). Authentic lighting, exposure anomalies, and photographic grain are 
+                    preserved as documented historical evidence.
                   </p>
-                  <h3>ILLUSTRATIVE AI-GENERATED SCENES</h3>
+                </div>
+
+                <div className="archival-card">
+                  <span className="card-badge">EDUCATIONAL ART</span>
+                  <h3>Illustrative AI-Generated Scenes</h3>
                   <p>
                     Where historical photography was impossible—such as deep-space cruise phases, atmospheric entry trajectories, 
-                    or descent engine firings—illustrative scenes provide educational context. Every illustrative scene is explicitly 
-                    labeled on-screen: <em>“Illustrative AI scene. Not an actual site or NASA footage.”</em> They are never substituted 
-                    for authentic scientific evidence.
+                    or descent engine burns—illustrative scenes provide educational context. Every illustrative scene is explicitly 
+                    labeled: <em>“Illustrative AI scene. Not an actual site or NASA footage.”</em> They are never substituted for authentic evidence.
                   </p>
                 </div>
-                <div>
-                  <h3>IMAGINED SURVEYOR CUTAWAY</h3>
+
+                <div className="archival-card">
+                  <span className="card-badge">CONCEPTUAL MODEL</span>
+                  <h3>Imagined Surveyor Cutaway</h3>
                   <p>
-                    The optional Surveyor 3 cutaway animation illustrates an imagined interior. It is presented strictly 
-                    as an educational artist’s visualization to help readers understand interior arrangement, rather than an official 
-                    engineering CAD drawing or authentic hardware recording.
+                    The optional Surveyor 3 cutaway animation illustrates an imagined mechanical interior. It is presented strictly 
+                    as an educational artist's conceptual study to visualize interior sub-systems, rather than an official engineering 
+                    CAD model or authentic telemetry recording.
                   </p>
-                  <h3>RECREATED INTERFACE WAVEFORMS & SIGNALS</h3>
+                </div>
+
+                <div className="archival-card">
+                  <span className="card-badge">INTERFACE DESIGN</span>
+                  <h3>Recreated Waveforms & Signals</h3>
                   <p>
-                    All interface waveforms, carrier-lock visuals, telemetry traces, and signal status pulses are aesthetic, 
+                    All interface waveforms, carrier-lock animations, telemetry traces, and signal status pulses are aesthetic, 
                     recreated interface elements. <strong>They are not actual NASA radio transmission data or recorded telemetry.</strong> 
-                    This site does not play synthetic transmission audio, radio chatter, or dramatic trailers.
+                    This site does not play synthetic radio static, fabricated astronaut speech, or dramatic background trailers.
                   </p>
                 </div>
               </div>
             </div>
-          </article>
+          </section>
 
-          {/* 03 — RESEARCH METHODOLOGY */}
-          <article id="sec-03" className="about-block">
-            <div className="block-meta">
-              <span className="block-num">03</span>
-              <span className="block-tag">METHODOLOGY</span>
+          {/* SECTION 03 — RESEARCH METHODOLOGY */}
+          <section id="section-03" className="about-section">
+            <div className="section-meta">
+              <span className="section-number">03</span>
+              <span className="section-tag">HISTORICAL METHOD</span>
             </div>
-            <div className="block-body">
-              <h2>How to Read the Archive</h2>
-              <div className="editorial-columns">
-                <div>
-                  <h3>DATE CONVENTIONS AND HISTORICAL CONTEXT</h3>
+            <div className="section-content">
+              <div className="title-block">
+                <h2>RESEARCH METHODOLOGY</h2>
+                <p className="subtitle">How facts are documented, reconciled, and held accountable.</p>
+              </div>
+
+              <div className="methodology-flow">
+                <div className="method-step">
+                  <div className="step-marker">01</div>
+                  <div className="step-body">
+                    <h3>Date Conventions & Timezone Precision</h3>
+                    <p>
+                      Spacecraft events occur across multiple reference frames. In this archive, dates retain their source context 
+                      and state their timezones explicitly. For instance, Opportunity launched on <strong>July 8, 2003 UTC</strong>, which 
+                      corresponded to <strong>July 7 in Pacific Daylight Time (PDT)</strong> at the mission control center in California; 
+                      it landed on Mars on <strong>January 25, 2004 UTC</strong> (January 24 PST). Transparent timezone labeling eliminates false contradictions.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="method-step">
+                  <div className="step-marker">02</div>
+                  <div className="step-body">
+                    <h3>Documented Uncertainties & Conflicting Sources</h3>
+                    <p>
+                      Official summaries occasionally contain conflicting historical data. NASA’s public Surveyor 3 summary contains 
+                      inconsistent dates for Apollo 12’s visit. THE LAST SIGNAL resolves this by adhering to the primary mission flight 
+                      journal and photographic timestamps: Apollo 12 touched down on <strong>November 19, 1969</strong>, and visited Surveyor 
+                      during the second moonwalk on <strong>November 20</strong>. Furthermore, the lander was not returned in full—only 
+                      its television camera, scoop, and selected tubing were recovered for analysis.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="method-step">
+                  <div className="step-marker">03</div>
+                  <div className="step-body">
+                    <h3>Documented Endings vs. Mythological Narratives</h3>
+                    <p>
+                      Missions conclude in distinct, documented ways: deliberate command terminations, communication cutoffs, battery 
+                      depletions, or intentional kinetic impacts. The Apollo 17 Lunar Roving Vehicle's television camera transmission 
+                      showing the lunar module ascent stage lifting off is presented as a documented final visual milestone, not as a 
+                      speculative “last packet.” Where no final transmission was recorded, no synthetic dramatization takes its place.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION 04 — ACCESSIBILITY */}
+          <section id="section-04" className="about-section">
+            <div className="section-meta">
+              <span className="section-number">04</span>
+              <span className="section-tag">INCLUSION</span>
+            </div>
+            <div className="section-content">
+              <div className="title-block">
+                <h2>ACCESSIBILITY</h2>
+                <p className="subtitle">Built to ensure archival discovery is open to every reader and device.</p>
+              </div>
+
+              <div className="grid-four-col">
+                <div className="access-pillar">
+                  <span className="access-icon">◌</span>
+                  <h3>Reduced Motion</h3>
                   <p>
-                    Spacecraft events occur across multiple reference frames. In this archive, dates retain their source context 
-                    and state their timezones explicitly. For instance, Opportunity launched on <strong>July 8, 2003 UTC</strong>, which 
-                    corresponded to <strong>July 7 in Pacific Daylight Time (PDT)</strong> at the mission control center in California; 
-                    it landed on Mars on <strong>January 25, 2004 UTC</strong> (January 24 PST). Transparent timezone labeling eliminates false contradictions.
-                  </p>
-                  <h3>DOCUMENTED UNCERTAINTIES & CONFLICTING SOURCES</h3>
-                  <p>
-                    NASA's public Surveyor summary contains inconsistent Apollo 12 visit dates. This archive follows the primary 
-                    historical mission account and official image captions: Apollo 12 touched down on <strong>November 19, 1969</strong>, 
-                    and visited Surveyor 3 during the second moonwalk on <strong>November 20</strong>. Furthermore, the lander was not returned 
-                    in full—only select components like its camera and scoop were recovered for terrestrial analysis.
+                    Full <code>prefers-reduced-motion</code> compliance. Replaces 3D drift and scroll-linked scaling with static stills, 
+                    disables viewport parallax, and bypasses signal-acquisition wait timers.
                   </p>
                 </div>
-                <div>
-                  <h3>VERIFYING HISTORICAL CLAIMS AND DOCUMENTED ENDINGS</h3>
+
+                <div className="access-pillar">
+                  <span className="access-icon">⊞</span>
+                  <h3>Keyboard Control</h3>
                   <p>
-                    Missions conclude in documented, distinct ways: planned impact, contact timeout, deliberate retirement, or battery exhaustion. 
-                    The Apollo 17 Lunar Rover’s final liftoff-camera event is recorded as a documented final television event, not as a 
-                    speculative claim about the rover’s exact final radio packet.
+                    Full keyboard navigability. Includes top-level skip links, accessible focus rings, Arrow-key tab navigation, 
+                    and <code>Escape</code> key support for closing drawers and menus.
                   </p>
+                </div>
+
+                <div className="access-pillar">
+                  <span className="access-icon">☷</span>
+                  <h3>Manual Reading</h3>
                   <p>
-                    Where no original recording is included, no fictional recording, synthetic voice, or invented dialogue takes its place.
+                    Readers control reading velocity. Every story scene, event sequence, and archive record can be advanced 
+                    manually with dedicated next/previous controls and pause toggles.
+                  </p>
+                </div>
+
+                <div className="access-pillar">
+                  <span className="access-icon">◇</span>
+                  <h3>Semantic Standards</h3>
+                  <p>
+                    WCAG 2.1 AA compliant color contrast, native form elements, descriptive alternative text on archival photos, 
+                    and ARIA live regions for filter count updates.
                   </p>
                 </div>
               </div>
             </div>
-          </article>
+          </section>
 
-          {/* 04 — ACCESSIBILITY */}
-          <article id="sec-04" className="about-block">
-            <div className="block-meta">
-              <span className="block-num">04</span>
-              <span className="block-tag">ACCESSIBILITY</span>
+          {/* SECTION 05 — RESEARCH & REFERENCES */}
+          <section id="section-05" className="about-section sources-section">
+            <div id="sources" className="anchor-target" />
+            <div id="references" className="anchor-target" />
+            
+            <div className="section-meta">
+              <span className="section-number">05</span>
+              <span className="section-tag">PRIMARY SOURCES</span>
             </div>
-            <div className="block-body">
-              <h2>Accessible by Design</h2>
-              <div className="editorial-columns">
-                <div>
-                  <h3>REDUCED-MOTION SUPPORT</h3>
-                  <p>
-                    Reduced-motion settings (<code>prefers-reduced-motion: reduce</code>) replace dynamic 3D sequences and the cutaway 
-                    with two static stills, remove viewport drifting and reveal animations, and skip signal-acquisition wait timers so 
-                    that content is accessible immediately.
-                  </p>
-                  <h3>KEYBOARD NAVIGATION</h3>
-                  <p>
-                    Comprehensive keyboard traversal throughout the site: skip-to-content links, tab-accessible menus and controls, 
-                    Arrow-key tab navigation for timelines, and <code>Escape</code> key support for closing drawers and menus.
-                  </p>
-                </div>
-                <div>
-                  <h3>MANUAL READING CONTROLS</h3>
-                  <p>
-                    Readers control reading pace. Story scenes, event sequences, and archive timelines advance manually with dedicated 
-                    previous/next controls and pause toggles, rather than forcing automated transitions.
-                  </p>
-                  <h3>NATIVE FILTERS & ACCESSIBLE ALTERNATIVES</h3>
-                  <p>
-                    Native accessible form elements, ARIA live regions for announcing filtered result counts, descriptive alternative 
-                    text for all historical photography, and high-contrast typography meeting WCAG 2.1 AA standards.
-                  </p>
-                </div>
+            <div className="section-content">
+              <div className="title-block">
+                <h2>RESEARCH & REFERENCES</h2>
+                <p className="subtitle">
+                  An expandable primary evidence library organized by destination, mission, and source.
+                </p>
               </div>
-            </div>
-          </article>
 
-          {/* 05 — RESEARCH & REFERENCES */}
-          <article id="sec-05" className="about-block sources-block">
-            <div id="sources" className="anchor-mark" />
-            <div id="references" className="anchor-mark" />
-
-            <div className="block-meta">
-              <span className="block-num">05</span>
-              <span className="block-tag">PRIMARY EVIDENCE</span>
-            </div>
-            <div className="block-body">
-              <h2>Research & References</h2>
-              <p className="sources-intro">
-                An expandable primary evidence library organized into mission-based groups. Each reference retains its original title, 
-                official destination URL, and source attribution.
-              </p>
-
-              {/* Search Field & Controls */}
-              <div className="ref-controls-panel">
-                <div className="ref-search-field">
-                  <span className="ref-icon" aria-hidden="true">⚲</span>
+              {/* Search & Filter Controls */}
+              <div className="reference-controls">
+                <div className="ref-search-wrap">
+                  <span className="ref-search-icon" aria-hidden="true">⚲</span>
                   <input
                     type="search"
-                    className="ref-input"
+                    className="ref-search-input"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Find references by mission, title, agency, or keyword..."
+                    placeholder="Search references by mission, agency, title, or keyword..."
                     aria-label="Filter references"
                   />
                   {searchQuery && (
-                    <button
-                      className="ref-clear"
+                    <button 
+                      className="ref-clear-btn"
                       onClick={() => setSearchQuery('')}
-                      aria-label="Clear search"
+                      aria-label="Clear search query"
                     >
                       CLEAR ✕
                     </button>
                   )}
                 </div>
 
-                <div className="ref-bar">
-                  <span className="ref-total" aria-live="polite">
+                <div className="ref-toolbar">
+                  <span className="ref-count-badge" aria-live="polite">
                     {totalRefCounts} {totalRefCounts === 1 ? 'REFERENCE' : 'REFERENCES'} · {filteredMissions.length} {filteredMissions.length === 1 ? 'MISSION' : 'MISSIONS'}
-                    {searchQuery ? ' MATCHED' : ''}
+                    {searchQuery && ' MATCHED'}
                   </span>
-                  <div className="ref-actions">
-                    <button onClick={expandAll}>EXPAND ALL</button>
-                    <span className="slash">/</span>
-                    <button onClick={collapseAll}>COLLAPSE ALL</button>
+                  <div className="ref-toggles">
+                    <button className="ref-toggle-btn" onClick={expandAll}>EXPAND ALL</button>
+                    <span className="divider">/</span>
+                    <button className="ref-toggle-btn" onClick={collapseAll}>COLLAPSE ALL</button>
                   </div>
                 </div>
               </div>
 
               {filteredMissions.length === 0 ? (
-                <div className="ref-none">
-                  <p>No primary references found matching "{searchQuery}".</p>
+                <div className="ref-empty-state">
+                  <h3>No references match your query</h3>
+                  <p>Try searching for a different spacecraft, planet, or research keyword.</p>
                   <button className="outline" onClick={() => setSearchQuery('')}>RESET SEARCH</button>
                 </div>
               ) : (
-                <div className="ref-groups-list">
-                  {/* 1. Lunar Missions */}
+                <div className="ref-category-stack">
+                  {/* Category 1: Lunar Missions */}
                   {groupedByCategory.lunar.length > 0 && (
-                    <div className="ref-group-box">
-                      <button
-                        className="group-toggle-btn"
+                    <div className="ref-category-card">
+                      <button 
+                        className="category-header-btn" 
                         aria-expanded={expandedGroups['lunar']}
                         onClick={() => toggleGroup('lunar')}
                       >
-                        <div className="group-label-wrap">
-                          <span className="group-name">LUNAR MISSIONS</span>
-                          <span className="group-count">
-                            {groupedByCategory.lunar.reduce((a, m) => a + m.sources.length, 0)} SOURCES
+                        <div className="cat-title-wrap">
+                          <span className="cat-index">01</span>
+                          <span className="cat-name">LUNAR MISSIONS</span>
+                          <span className="cat-badge">
+                            {groupedByCategory.lunar.reduce((a, m) => a + m.sources.length, 0)} REFERENCES
                           </span>
                         </div>
-                        <span className="group-caret">{expandedGroups['lunar'] ? '−' : '+'}</span>
+                        <span className="accordion-caret">{expandedGroups['lunar'] ? '−' : '+'}</span>
                       </button>
 
                       {expandedGroups['lunar'] && (
-                        <div className="group-missions">
-                          {groupedByCategory.lunar.map(m => {
-                            const open = isMissionOpen(m.id);
-                            return (
-                              <div key={m.id} className={`mission-row ${open ? 'open' : ''}`}>
-                                <button
-                                  className="mission-row-btn"
-                                  aria-expanded={open}
-                                  onClick={() => toggleMission(m.id)}
-                                >
-                                  <span className="m-title">{m.mission}</span>
-                                  <span className="m-sources-pill">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                  <span className="m-symbol">{open ? '−' : '+'}</span>
-                                </button>
-
-                                {open && (
-                                  <ul className="m-links-list">
-                                    {m.sources.map((s, idx) => (
-                                      <li key={s.href + idx}>
-                                        <a href={s.href} target="_blank" rel="noreferrer" className="m-link-item">
-                                          <span className="link-text">{s.t} ↗</span>
-                                          <span className="link-host">{getHostname(s.href)}</span>
-                                        </a>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </div>
-                            );
-                          })}
+                        <div className="mission-list">
+                          {groupedByCategory.lunar.map(m => (
+                            <div key={m.id} className="mission-ref-item">
+                              <button 
+                                className="mission-header-btn"
+                                aria-expanded={expandedMissions[m.id] !== false}
+                                onClick={() => toggleMission(m.id)}
+                              >
+                                <span className="m-name">{m.mission}</span>
+                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
+                              </button>
+                              
+                              {expandedMissions[m.id] !== false && (
+                                <ul className="source-links">
+                                  {m.sources.map((s, idx) => (
+                                    <li key={s.href + idx} className="source-link-row">
+                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
+                                        <span className="src-title">{s.t}</span>
+                                        <span className="src-host">{getHostname(s.href)} ↗</span>
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
                   )}
 
-                  {/* 2. Commercial Lunar Missions */}
+                  {/* Category 2: Commercial Lunar Missions */}
                   {groupedByCategory.commercial.length > 0 && (
-                    <div className="ref-group-box">
-                      <button
-                        className="group-toggle-btn"
+                    <div className="ref-category-card">
+                      <button 
+                        className="category-header-btn" 
                         aria-expanded={expandedGroups['commercial']}
                         onClick={() => toggleGroup('commercial')}
                       >
-                        <div className="group-label-wrap">
-                          <span className="group-name">COMMERCIAL LUNAR MISSIONS (CLPS)</span>
-                          <span className="group-count">
-                            {groupedByCategory.commercial.reduce((a, m) => a + m.sources.length, 0)} SOURCES
+                        <div className="cat-title-wrap">
+                          <span className="cat-index">02</span>
+                          <span className="cat-name">COMMERCIAL LUNAR MISSIONS (CLPS)</span>
+                          <span className="cat-badge">
+                            {groupedByCategory.commercial.reduce((a, m) => a + m.sources.length, 0)} REFERENCES
                           </span>
                         </div>
-                        <span className="group-caret">{expandedGroups['commercial'] ? '−' : '+'}</span>
+                        <span className="accordion-caret">{expandedGroups['commercial'] ? '−' : '+'}</span>
                       </button>
 
                       {expandedGroups['commercial'] && (
-                        <div className="group-missions">
-                          {groupedByCategory.commercial.map(m => {
-                            const open = isMissionOpen(m.id);
-                            return (
-                              <div key={m.id} className={`mission-row ${open ? 'open' : ''}`}>
-                                <button
-                                  className="mission-row-btn"
-                                  aria-expanded={open}
-                                  onClick={() => toggleMission(m.id)}
-                                >
-                                  <span className="m-title">{m.mission}</span>
-                                  <span className="m-sources-pill">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                  <span className="m-symbol">{open ? '−' : '+'}</span>
-                                </button>
-
-                                {open && (
-                                  <ul className="m-links-list">
-                                    {m.sources.map((s, idx) => (
-                                      <li key={s.href + idx}>
-                                        <a href={s.href} target="_blank" rel="noreferrer" className="m-link-item">
-                                          <span className="link-text">{s.t} ↗</span>
-                                          <span className="link-host">{getHostname(s.href)}</span>
-                                        </a>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </div>
-                            );
-                          })}
+                        <div className="mission-list">
+                          {groupedByCategory.commercial.map(m => (
+                            <div key={m.id} className="mission-ref-item">
+                              <button 
+                                className="mission-header-btn"
+                                aria-expanded={expandedMissions[m.id] !== false}
+                                onClick={() => toggleMission(m.id)}
+                              >
+                                <span className="m-name">{m.mission}</span>
+                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
+                              </button>
+                              
+                              {expandedMissions[m.id] !== false && (
+                                <ul className="source-links">
+                                  {m.sources.map((s, idx) => (
+                                    <li key={s.href + idx} className="source-link-row">
+                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
+                                        <span className="src-title">{s.t}</span>
+                                        <span className="src-host">{getHostname(s.href)} ↗</span>
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
                   )}
 
-                  {/* 3. Mars Missions */}
+                  {/* Category 3: Mars Missions */}
                   {groupedByCategory.mars.length > 0 && (
-                    <div className="ref-group-box">
-                      <button
-                        className="group-toggle-btn"
+                    <div className="ref-category-card">
+                      <button 
+                        className="category-header-btn" 
                         aria-expanded={expandedGroups['mars']}
                         onClick={() => toggleGroup('mars')}
                       >
-                        <div className="group-label-wrap">
-                          <span className="group-name">MARS MISSIONS</span>
-                          <span className="group-count">
-                            {groupedByCategory.mars.reduce((a, m) => a + m.sources.length, 0)} SOURCES
+                        <div className="cat-title-wrap">
+                          <span className="cat-index">03</span>
+                          <span className="cat-name">MARS MISSIONS</span>
+                          <span className="cat-badge">
+                            {groupedByCategory.mars.reduce((a, m) => a + m.sources.length, 0)} REFERENCES
                           </span>
                         </div>
-                        <span className="group-caret">{expandedGroups['mars'] ? '−' : '+'}</span>
+                        <span className="accordion-caret">{expandedGroups['mars'] ? '−' : '+'}</span>
                       </button>
 
                       {expandedGroups['mars'] && (
-                        <div className="group-missions">
-                          {groupedByCategory.mars.map(m => {
-                            const open = isMissionOpen(m.id);
-                            return (
-                              <div key={m.id} className={`mission-row ${open ? 'open' : ''}`}>
-                                <button
-                                  className="mission-row-btn"
-                                  aria-expanded={open}
-                                  onClick={() => toggleMission(m.id)}
-                                >
-                                  <span className="m-title">{m.mission}</span>
-                                  <span className="m-sources-pill">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                  <span className="m-symbol">{open ? '−' : '+'}</span>
-                                </button>
-
-                                {open && (
-                                  <ul className="m-links-list">
-                                    {m.sources.map((s, idx) => (
-                                      <li key={s.href + idx}>
-                                        <a href={s.href} target="_blank" rel="noreferrer" className="m-link-item">
-                                          <span className="link-text">{s.t} ↗</span>
-                                          <span className="link-host">{getHostname(s.href)}</span>
-                                        </a>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </div>
-                            );
-                          })}
+                        <div className="mission-list">
+                          {groupedByCategory.mars.map(m => (
+                            <div key={m.id} className="mission-ref-item">
+                              <button 
+                                className="mission-header-btn"
+                                aria-expanded={expandedMissions[m.id] !== false}
+                                onClick={() => toggleMission(m.id)}
+                              >
+                                <span className="m-name">{m.mission}</span>
+                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
+                              </button>
+                              
+                              {expandedMissions[m.id] !== false && (
+                                <ul className="source-links">
+                                  {m.sources.map((s, idx) => (
+                                    <li key={s.href + idx} className="source-link-row">
+                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
+                                        <span className="src-title">{s.t}</span>
+                                        <span className="src-host">{getHostname(s.href)} ↗</span>
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
                   )}
 
-                  {/* 4. Deep Space Missions */}
+                  {/* Category 4: Deep Space Missions */}
                   {groupedByCategory['deep-space'].length > 0 && (
-                    <div className="ref-group-box">
-                      <button
-                        className="group-toggle-btn"
+                    <div className="ref-category-card">
+                      <button 
+                        className="category-header-btn" 
                         aria-expanded={expandedGroups['deep-space']}
                         onClick={() => toggleGroup('deep-space')}
                       >
-                        <div className="group-label-wrap">
-                          <span className="group-name">DEEP SPACE MISSIONS</span>
-                          <span className="group-count">
-                            {groupedByCategory['deep-space'].reduce((a, m) => a + m.sources.length, 0)} SOURCES
+                        <div className="cat-title-wrap">
+                          <span className="cat-index">04</span>
+                          <span className="cat-name">DEEP SPACE MISSIONS</span>
+                          <span className="cat-badge">
+                            {groupedByCategory['deep-space'].reduce((a, m) => a + m.sources.length, 0)} REFERENCES
                           </span>
                         </div>
-                        <span className="group-caret">{expandedGroups['deep-space'] ? '−' : '+'}</span>
+                        <span className="accordion-caret">{expandedGroups['deep-space'] ? '−' : '+'}</span>
                       </button>
 
                       {expandedGroups['deep-space'] && (
-                        <div className="group-missions">
-                          {groupedByCategory['deep-space'].map(m => {
-                            const open = isMissionOpen(m.id);
-                            return (
-                              <div key={m.id} className={`mission-row ${open ? 'open' : ''}`}>
-                                <button
-                                  className="mission-row-btn"
-                                  aria-expanded={open}
-                                  onClick={() => toggleMission(m.id)}
-                                >
-                                  <span className="m-title">{m.mission}</span>
-                                  <span className="m-sources-pill">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
-                                  <span className="m-symbol">{open ? '−' : '+'}</span>
-                                </button>
-
-                                {open && (
-                                  <ul className="m-links-list">
-                                    {m.sources.map((s, idx) => (
-                                      <li key={s.href + idx}>
-                                        <a href={s.href} target="_blank" rel="noreferrer" className="m-link-item">
-                                          <span className="link-text">{s.t} ↗</span>
-                                          <span className="link-host">{getHostname(s.href)}</span>
-                                        </a>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </div>
-                            );
-                          })}
+                        <div className="mission-list">
+                          {groupedByCategory['deep-space'].map(m => (
+                            <div key={m.id} className="mission-ref-item">
+                              <button 
+                                className="mission-header-btn"
+                                aria-expanded={expandedMissions[m.id] !== false}
+                                onClick={() => toggleMission(m.id)}
+                              >
+                                <span className="m-name">{m.mission}</span>
+                                <span className="m-count">{m.sources.length} {m.sources.length === 1 ? 'SOURCE' : 'SOURCES'}</span>
+                                <span className="m-caret">{expandedMissions[m.id] === false ? '+' : '−'}</span>
+                              </button>
+                              
+                              {expandedMissions[m.id] !== false && (
+                                <ul className="source-links">
+                                  {m.sources.map((s, idx) => (
+                                    <li key={s.href + idx} className="source-link-row">
+                                      <a href={s.href} target="_blank" rel="noreferrer" className="source-anchor">
+                                        <span className="src-title">{s.t}</span>
+                                        <span className="src-host">{getHostname(s.href)} ↗</span>
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
@@ -633,46 +711,88 @@ export default function About() {
                 </div>
               )}
             </div>
-          </article>
+          </section>
 
-          {/* 06 — IMAGE CREDITS & DISCLAIMERS */}
-          <article id="sec-06" className="about-block">
-            <div className="block-meta">
-              <span className="block-num">06</span>
-              <span className="block-tag">LEGAL & CREDITS</span>
+          {/* SECTION 06 — IMAGE CREDITS & DISCLAIMERS */}
+          <section id="section-06" className="about-section">
+            <div className="section-meta">
+              <span className="section-number">06</span>
+              <span className="section-tag">LEGAL & CREDITS</span>
             </div>
-            <div className="block-body">
-              <h2>Image Credits & Disclaimers</h2>
-              
-              <h3>HISTORICAL IMAGE CREDITS</h3>
-              <p className="credit-list">
-                Surveyor 3: NASA, AS12-48-7121 and AS12-48-7133. Apollo 17: NASA, AS17-137-20979 and AS17-145-22162. 
-                Opportunity: NASA/JPL-Caltech, PIA06739 and PIA17759. Lunar Reconnaissance Orbiter: NASA/GSFC/Arizona State University (LROC). 
-                Mars Reconnaissance Orbiter / Curiosity / Perseverance: NASA/JPL-Caltech/MSSS. Existing illustrative scenes are labeled and are not NASA photographs.
-              </p>
+            <div className="section-content">
+              <div className="title-block">
+                <h2>IMAGE CREDITS & DISCLAIMERS</h2>
+                <p className="subtitle">Attributions, intellectual property, and educational terms.</p>
+              </div>
 
-              <h3>NASA IMAGE & MEDIA GUIDELINES</h3>
-              <p>
-                <a href="https://www.nasa.gov/nasa-brand-center/images-and-media/" target="_blank" rel="noreferrer" className="text-link">
-                  NASA image and media guidelines ↗
-                </a>
-              </p>
+              <div className="credits-grid">
+                <div className="credit-block">
+                  <h3>Historical Image Provenance</h3>
+                  <p className="credit-p">
+                    Photographs and instrument scans are credited beside each appearance. Significant source records include:
+                  </p>
+                  <ul className="credit-bullets">
+                    <li><strong>Surveyor 3:</strong> NASA, AS12-48-7121 and AS12-48-7133.</li>
+                    <li><strong>Apollo 17:</strong> NASA, AS17-137-20979 and AS17-145-22162.</li>
+                    <li><strong>Opportunity:</strong> NASA/JPL-Caltech, PIA06739 and PIA17759.</li>
+                    <li><strong>Lunar Reconnaissance Orbiter:</strong> NASA/GSFC/Arizona State University (LROC).</li>
+                    <li><strong>Mars Reconnaissance Orbiter / Curiosity / Perseverance:</strong> NASA/JPL-Caltech/MSSS.</li>
+                  </ul>
+                  <p className="credit-note">Existing illustrative reconstructions are labeled and are not authentic NASA photographs.</p>
+                </div>
 
-              <h3>RESEARCH CUT-OFF DATE</h3>
-              <p className="muted">
-                Research checked November 11, 2026. Active mission status re-checked November 12, 2026.
-              </p>
+                <div className="credit-block">
+                  <h3>Open Font Licensing</h3>
+                  <p className="credit-p">
+                    Typography across THE LAST SIGNAL is rendered using self-hosted open fonts:
+                  </p>
+                  <ul className="credit-bullets">
+                    <li><strong>Cormorant Garamond:</strong> Designed by Christian Thalmann (SIL Open Font License).</li>
+                    <li><strong>Inter:</strong> Designed by Rasmus Andersson (SIL Open Font License).</li>
+                    <li><strong>IBM Plex Mono:</strong> Designed by Mike Abbink and Bold Monday (SIL Open Font License).</li>
+                  </ul>
+                  <p className="credit-note">Full font license texts are included in the source code distribution.</p>
+                </div>
+              </div>
 
-              <div className="disclaimer-note">
+              <div className="disclaimer-callout">
+                <div className="disclaimer-header">
+                  <span className="disclaimer-badge">OFFICIAL NOTICE</span>
+                  <a 
+                    href="https://www.nasa.gov/nasa-brand-center/images-and-media/" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="disclaimer-link"
+                  >
+                    NASA Image and Media Guidelines ↗
+                  </a>
+                </div>
                 <p>
-                  <strong>Independent Educational Project:</strong> THE LAST SIGNAL is an independent educational storytelling 
-                  and preservation project. It is not an official NASA product, has not been produced under NASA auspices, 
-                  and is not endorsed by NASA or the United States Government.
+                  THE LAST SIGNAL is an independent educational storytelling and preservation project. It is not an 
+                  official NASA product, has not been produced under NASA contract, and is not endorsed by the National 
+                  Aeronautics and Space Administration (NASA), the Jet Propulsion Laboratory (JPL), or any commercial aerospace vendor.
                 </p>
+                <div className="disclaimer-footer">
+                  <span>RESEARCH VERIFIED: 11 NOVEMBER 2026</span>
+                  <span>ACTIVE RE-CHECK: 12 NOVEMBER 2026</span>
+                  <span>DOCUMENTED HISTORY · OPEN TRANSPARENCY</span>
+                </div>
+              </div>
+
+              <div className="about-footer-nav">
+                <Link to="/machines" className="cta">
+                  EXPLORE THE MISSION DIRECTORY <span>⟶</span>
+                </Link>
+                <Link to="/stories" className="outline">
+                  READ THE PICTURE-BOOK STORIES ↗
+                </Link>
+                <Link to="/equipment" className="outline">
+                  INSPECT 3D EQUIPMENT ↗
+                </Link>
               </div>
             </div>
-          </article>
-        </section>
+          </section>
+        </article>
       )}
     </Frame>
   );
